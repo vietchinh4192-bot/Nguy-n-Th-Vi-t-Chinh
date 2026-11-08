@@ -1,0 +1,65 @@
+import { GameState, TeamState } from '../types';
+import { DEFAULT_QUESTION_SETS } from './defaultQuestions';
+
+export const INITIAL_TEAMS: Record<number, TeamState> = {
+  1: {
+    id: 1,
+    name: 'Nhóm 1',
+    color: '#ef4444',
+    accentColor: '#f87171',
+    score: 0,
+    choice: null,
+    choiceTime: null,
+    isLocked: false,
+    isConnected: false,
+    lastActive: Date.now(),
+  },
+  2: {
+    id: 2,
+    name: 'Nhóm 2',
+    color: '#3b82f6',
+    accentColor: '#60a5fa',
+    score: 0,
+    choice: null,
+    choiceTime: null,
+    isLocked: false,
+    isConnected: false,
+    lastActive: Date.now(),
+  },
+  3: {
+    id: 3,
+    name: 'Nhóm 3',
+    color: '#f59e0b',
+    accentColor: '#fbbf24',
+    score: 0,
+    choice: null,
+    choiceTime: null,
+    isLocked: false,
+    isConnected: false,
+    lastActive: Date.now(),
+  },
+  4: {
+    id: 4,
+    name: 'Nhóm 4',
+    color: '#10b981',
+    accentColor: '#34d399',
+    score: 0,
+    choice: null,
+    choiceTime: null,
+    isLocked: false,
+    isConnected: false,
+    lastActive: Date.now(),
+  },
+};
+
+export const INITIAL_GAME_STATE: GameState = {
+  currentSetId: DEFAULT_QUESTION_SETS[0].id,
+  currentQuestionIdx: 0,
+  timerDuration: 30,
+  timerSecondsRemaining: 30,
+  isTimerRunning: false,
+  timerStartTime: null,
+  isRevealed: false,
+  teacherName: 'Nguyễn Thị Việt Chinh',
+  teams: JSON.parse(JSON.stringify(INITIAL_TEAMS)),
+};

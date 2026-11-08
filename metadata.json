@@ -1,0 +1,6 @@
+{
+  "name": "Đấu Trường Olympia - 4 Nhóm Trả Lời Trực Tuyến",
+  "description": "Hệ thống thi đấu và trả lời câu hỏi trực tuyến phong cách Đường Lên Đỉnh Olympia cho 4 nhóm quét mã QR trên điện thoại. Giáo viên: Nguyễn Thị Việt Chinh.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,2693 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Đấu Trường Vật Lí: Động Học - 10A6 THPT Đại Từ</title>
+  <style>
+    :root {
+      --bg: #0b1120;
+      --card-bg: rgba(30, 41, 59, 0.9);
+      --card-border: rgba(255, 255, 255, 0.15);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --gold: #f59e0b;
+      --team1: #ef4444;
+      --team2: #3b82f6;
+      --team3: #f59e0b;
+      --team4: #10b981;
+      --correct: #22c55e;
+      --wrong: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0b1120 0%, #1e1b4b 50%, #0f172a 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* =========================================================================
+       TỐI ƯU HÓA TRÌNH CHIẾU TIVI / MÁY CHIẾU (16:9 CHUẨN KHÔNG TRÀN MÀN HÌNH)
+       ========================================================================= */
+    body.fullscreen-active {
+      height: 100vh !important;
+      max-height: 100vh !important;
+      overflow: hidden !important;
+    }
+
+    body.fullscreen-active header {
+      padding: 6px 16px;
+      flex-shrink: 0;
+    }
+
+    body.fullscreen-active main {
+      height: calc(100vh - 56px) !important;
+      max-height: calc(100vh - 56px) !important;
+      overflow: hidden !important;
+      padding: 8px 14px 10px !important;
+      gap: 8px !important;
+      justify-content: space-between;
+    }}
+
+    body.fullscreen-active #hostView {
+      height: 100% !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: space-between !important;
+      gap: 8px !important;
+      overflow: hidden !important;
+    }
+
+    body.fullscreen-active .question-card {
+      padding: 10px 18px !important;
+      margin-bottom: 0 !important;
+      flex: 1 1 auto !important;
+      min-height: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: space-between !important;
+      overflow: hidden !important;
+    }
+
+    body.fullscreen-active .question-title {
+      font-size: 1.25rem !important;
+      margin-bottom: 8px !important;
+      line-height: 1.4 !important;
+    }
+
+    /* Khi có hình ảnh trên Tivi: Tự động chia 2 cột để tiết kiệm chiều dọc */
+    body.fullscreen-active .question-body-grid {
+      display: grid !important;
+      grid-template-columns: minmax(260px, 380px) 1fr !important;
+      gap: 16px !important;
+      align-items: center !important;
+      flex: 1 !important;
+      min-height: 0 !important;
+    }
+
+    body.fullscreen-active #questionImgWrap {
+      margin: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      height: 100% !important;
+    }
+
+    body.fullscreen-active #questionImg {
+      max-height: 190px !important;
+      max-width: 100% !important;
+      object-fit: contain !important;
+    }
+
+    body.fullscreen-active .options-container {
+      gap: 6px !important;
+    }
+
+    body.fullscreen-active .option-card {
+      padding: 8px 14px !important;
+    }
+
+    body.fullscreen-active .option-char {
+      width: 34px !important;
+      height: 34px !important;
+      font-size: 1.05rem !important;
+    }
+
+    body.fullscreen-active .option-body {
+      font-size: 1.05rem !important;
+    }
+
+    body.fullscreen-active .slots-grid {
+      gap: 8px !important;
+      margin-top: 4px !important;
+    }
+
+    body.fullscreen-active .slot-card {
+      padding: 8px 10px !important;
+      gap: 6px !important;
+    }
+
+    body.fullscreen-active .slot-banner {
+      min-height: 30px !important;
+      font-size: 0.85rem !important;
+    }
+
+    body.fullscreen-active .btn-pick-choice {
+      height: 38px !important;
+      font-size: 1.15rem !important;
+    }
+
+    body.fullscreen-active .action-bar {
+      padding: 8px 14px !important;
+      flex-shrink: 0 !important;
+    }
+
+    body.fullscreen-active .btn-giant-reveal {
+      padding: 8px 20px !important;
+      font-size: 0.98rem !important;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 10px 18px;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #38bdf8, #6366f1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+    }
+
+    .brand-title h1 {
+      font-size: 1.12rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #38bdf8, #818cf8, #f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-transform: uppercase;
+    }
+
+    .brand-title p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .badge-class {
+      background: rgba(56, 189, 248, 0.2);
+      color: #38bdf8;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
+    .badge-teacher {
+      background: rgba(99, 102, 241, 0.2);
+      color: #a5b4fc;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .header-btns {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 7px 13px;
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+      background: rgba(30, 41, 59, 0.85);
+      color: var(--text);
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      user-select: none;
+      transition: all 0.15s ease;
+    }
+
+    .btn:hover {
+      background: rgba(51, 65, 85, 0.95);
+      transform: translateY(-1px);
+    }
+
+    .btn-presentation {
+      background: linear-gradient(135deg, #7c3aed, #9333ea);
+      border-color: #a855f7;
+      color: white;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(168, 85, 247, 0.35);
+    }
+
+    .btn-presentation:hover {
+      background: linear-gradient(135deg, #9333ea, #a855f7);
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      border-color: #3b82f6;
+      color: white;
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #d97706, #f59e0b);
+      border-color: #fbbf24;
+      color: #1e1b4b;
+      font-weight: 700;
+    }
+
+    .btn-danger {
+      background: #dc2626;
+      border-color: #ef4444;
+      color: white;
+    }
+
+    .btn-success {
+      background: #16a34a;
+      border-color: #22c55e;
+      color: white;
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 14px 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* Question Board Card */
+    .question-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 20px 24px;
+      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.35);
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .question-badge {
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .current-set-badge {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fbbf24;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    
+    /* Pulse and Flash Keyframes for Dramatic Effects */
+    @keyframes timerPulse {
+      0% { transform: scale(1); box-shadow: 0 0 5px rgba(239, 68, 68, 0.4); }
+      50% { transform: scale(1.12); box-shadow: 0 0 25px rgba(239, 68, 68, 0.95); }
+      100% { transform: scale(1); box-shadow: 0 0 5px rgba(239, 68, 68, 0.4); }
+    }
+    @keyframes wheelGlow {
+      0% { border-color: rgba(56, 189, 248, 0.3); transform: scale(1); }
+      50% { border-color: #fbbf24; transform: scale(1.04); box-shadow: 0 0 20px rgba(251, 191, 36, 0.5); }
+      100% { border-color: rgba(56, 189, 248, 0.3); transform: scale(1); }
+    }
+
+    .timer-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(15, 23, 42, 0.8);
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--card-border);
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #38bdf8;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .question-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      line-height: 1.5;
+      color: #ffffff;
+      margin-bottom: 14px;
+    }
+
+    /* Active Student Selector Bar on Top of Question */
+    .active-student-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 8px 14px;
+      border-radius: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .active-bar-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #38bdf8;
+    }
+
+    .student-pill-btn {
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(30, 41, 59, 0.8);
+      color: #cbd5e1;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+    }
+
+    .student-pill-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .student-pill-btn.active {
+      background: #38bdf8;
+      color: #0f172a;
+      border-color: #7dd3fc;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+    }
+
+    /* Option Rows (Direct Clickable Anywhere) */
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option-card {
+      background: rgba(15, 23, 42, 0.65);
+      border: 2px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s ease;
+      position: relative;
+    }
+
+    .option-card:hover {
+      border-color: rgba(56, 189, 248, 0.6);
+      background: rgba(30, 41, 59, 0.85);
+      transform: translateY(-2px);
+    }
+
+    .option-main {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .option-char {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.15rem;
+      flex-shrink: 0;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .option-body {
+      font-size: 1.05rem;
+      line-height: 1.5;
+      color: #cbd5e1;
+      flex: 1;
+    }
+
+    /* Quick tick buttons for 4 students inside option card */
+    .option-student-ticks {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-tick-hs {
+      padding: 5px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(30, 41, 59, 0.8);
+      color: #cbd5e1;
+      font-size: 0.78rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-tick-hs:hover {
+      transform: scale(1.05);
+    }
+
+    .btn-tick-hs.active-1 { background: var(--team1) !important; color: white !important; border-color: #fca5a5 !important; box-shadow: 0 0 10px var(--team1); }
+    .btn-tick-hs.active-2 { background: var(--team2) !important; color: white !important; border-color: #93c5fd !important; box-shadow: 0 0 10px var(--team2); }
+    .btn-tick-hs.active-3 { background: var(--team3) !important; color: #1e1b4b !important; border-color: #fde68a !important; box-shadow: 0 0 10px var(--team3); }
+    .btn-tick-hs.active-4 { background: var(--team4) !important; color: white !important; border-color: #6ee7b7 !important; box-shadow: 0 0 10px var(--team4); }
+
+    /* Correct option highlight */
+    .option-card.is-correct {
+      background: rgba(34, 197, 94, 0.25) !important;
+      border-color: #22c55e !important;
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+    }
+
+    .option-card.is-correct .option-char {
+      background: #22c55e !important;
+      color: white !important;
+      border-color: #4ade80 !important;
+    }
+
+    .option-card.is-correct .option-body {
+      color: white !important;
+      font-weight: 600;
+    }
+
+    .option-card.is-wrong-dim {
+      opacity: 0.4;
+    }
+
+    .badge-correct {
+      background: #22c55e;
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      display: none;
+    }
+
+    .option-card.is-correct .badge-correct {
+      display: inline-block;
+    }
+
+    /* Explanation Box */
+    .explanation-box {
+      margin-top: 14px;
+      background: linear-gradient(135deg, rgba(30, 58, 138, 0.25), rgba(15, 23, 42, 0.7));
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-left: 4px solid #38bdf8;
+      border-radius: 10px;
+      padding: 12px 16px;
+      display: none;
+    }
+
+    .explanation-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #38bdf8;
+      margin-bottom: 4px;
+    }
+
+    .explanation-content {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #e2e8f0;
+    }
+
+    /* 4 Student Slots */
+    .slots-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+    }
+
+    .slots-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .slots-grid {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    @media (min-width: 640px) {
+      .slots-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1080px) {
+      .slots-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .slot-card {
+      background: var(--card-bg);
+      border-radius: 14px;
+      border: 2px solid var(--card-border);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .slot-card.slot-1 { border-color: rgba(239, 68, 68, 0.5); }
+    .slot-card.slot-2 { border-color: rgba(59, 130, 246, 0.5); }
+    .slot-card.slot-3 { border-color: rgba(245, 158, 11, 0.5); }
+    .slot-card.slot-4 { border-color: rgba(16, 185, 129, 0.5); }
+
+    .slot-card.eval-correct {
+      border-color: #22c55e !important;
+      background: rgba(34, 197, 94, 0.18) !important;
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.4) !important;
+    }
+
+    .slot-card.eval-wrong {
+      border-color: #ef4444 !important;
+      background: rgba(239, 68, 68, 0.15) !important;
+      box-shadow: 0 0 16px rgba(239, 68, 68, 0.35) !important;
+    }
+
+    .slot-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .slot-name-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .slot-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: white;
+      font-size: 0.95rem;
+    }
+
+    .slot-1 .slot-avatar { background: var(--team1); }
+    .slot-2 .slot-avatar { background: var(--team2); }
+    .slot-3 .slot-avatar { background: var(--team3); color: #1e1b4b; }
+    .slot-4 .slot-avatar { background: var(--team4); }
+
+    .student-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .student-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .student-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .slot-score {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #fbbf24;
+    }
+
+    .slot-banner {
+      min-height: 36px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      text-align: center;
+      padding: 0 8px;
+    }
+
+    .slot-banner.has-chosen {
+      background: rgba(56, 189, 248, 0.25);
+      color: #38bdf8;
+      border-color: #38bdf8;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+    }
+
+    .slot-banner.res-correct {
+      background: rgba(34, 197, 94, 0.25);
+      color: #4ade80;
+      border-color: #22c55e;
+    }
+
+    .slot-banner.res-wrong {
+      background: rgba(239, 68, 68, 0.25);
+      color: #f87171;
+      border-color: #ef4444;
+    }
+
+    /* 4 Buttons under each student */
+    .slot-choice-btns {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .btn-pick-choice {
+      height: 48px;
+      border-radius: 10px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      background: rgba(15, 23, 42, 0.75);
+      color: #e2e8f0;
+      font-size: 1.25rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+
+    .btn-pick-choice:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: scale(1.04);
+    }
+
+    .btn-pick-choice.selected {
+      background: #38bdf8 !important;
+      color: #0f172a !important;
+      border-color: #ffffff !important;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.8);
+      transform: scale(1.06);
+    }
+
+    .slot-1 .btn-pick-choice.selected { background: var(--team1) !important; color: white !important; border-color: #fecaca !important; box-shadow: 0 0 16px rgba(239, 68, 68, 0.8); }
+    .slot-2 .btn-pick-choice.selected { background: var(--team2) !important; color: white !important; border-color: #bfdbfe !important; box-shadow: 0 0 16px rgba(59, 130, 246, 0.8); }
+    .slot-3 .btn-pick-choice.selected { background: var(--team3) !important; color: #1e1b4b !important; border-color: #fef3c7 !important; box-shadow: 0 0 16px rgba(245, 158, 11, 0.8); }
+    .slot-4 .btn-pick-choice.selected { background: var(--team4) !important; color: white !important; border-color: #a7f3d0 !important; box-shadow: 0 0 16px rgba(16, 185, 129, 0.8); }
+
+    /* Bottom Action Bar */
+    .action-bar {
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 12px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn-giant-reveal {
+      padding: 10px 24px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      border: 2px solid #34d399;
+      color: white;
+      box-shadow: 0 4px 18px rgba(16, 185, 129, 0.4);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-giant-reveal:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(16, 185, 129, 0.55);
+    }
+
+    /* Mobile Student View */
+    #studentView {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 10px;
+    }
+
+    .mobile-card {
+      background: #1e293b;
+      border-radius: 16px;
+      border: 1px solid var(--card-border);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .mobile-choices {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .btn-mobile-opt {
+      height: 95px;
+      border-radius: 16px;
+      border: 3px solid rgba(255, 255, 255, 0.25);
+      background: rgba(15, 23, 42, 0.85);
+      color: white;
+      font-size: 2.4rem;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+
+    .btn-mobile-opt:active {
+      transform: scale(0.95);
+    }
+
+    .btn-mobile-opt.active {
+      background: #38bdf8 !important;
+      color: #0f172a !important;
+      border-color: #ffffff !important;
+      box-shadow: 0 0 24px rgba(56, 189, 248, 0.8);
+    }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.88);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 16px;
+    }
+
+    .modal-box {
+      background: #1e293b;
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      max-width: 680px;
+      width: 100%;
+      padding: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .modal-title-row h3 {
+      font-size: 1.25rem;
+      color: #38bdf8;
+    }
+
+    .btn-close-modal {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+
+    .btn-close-modal:hover { color: white; }
+
+    /* Tabs inside Sets Modal */
+    .tabs-nav {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 14px;
+    }
+
+    .tab-btn {
+      padding: 8px 14px;
+      background: transparent;
+      border: none;
+      border-bottom: 3px solid transparent;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      color: #38bdf8;
+      border-bottom-color: #38bdf8;
+    }
+
+    .tab-pane {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tab-pane.active {
+      display: flex;
+    }
+
+    /* QR Code Canvas Box */
+    .qr-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      background: rgba(15, 23, 42, 0.7);
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      margin: 12px 0;
+    }
+
+    #qrCanvas {
+      background: white;
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    /* Confetti */
+    #confettiCanvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand-section">
+      <div class="brand-icon">⚡</div>
+      <div class="brand-title">
+        <h1>Đấu Trường Vật Lí: Động Học</h1>
+        <p>
+          <span class="badge-class">LỚP: 10A6 (50 HS)</span>
+          <span class="badge-teacher">GVCN: Thầy LÊ TRUNG DŨNG - THPT ĐẠI TỪ</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="header-btns">
+      <!-- FULLSCREEN PRESENTATION MODE BUTTON -->
+      <button class="btn btn-presentation" id="btnFullscreen" title="Bật/Tắt chế độ trình chiếu toàn màn hình (Phím tắt: F11 hoặc F)">
+        ⛶ Trình chiếu
+      </button>
+
+      <!-- Select Question Set -->
+      <select class="btn" id="setSelector" style="background: rgba(15,23,42,0.9); color: #38bdf8; font-weight: 700; border-color: #38bdf8;">
+        <!-- Sets options -->
+      </select>
+
+      <!-- Manage Sets Button -->
+      <button class="btn btn-primary" id="btnManageSets">➕ Nạp Bộ Đề Mới</button>
+
+      <!-- Mobile QR Connect -->
+      <button class="btn" id="btnOpenQR">📲 Kết nối Điện thoại</button>
+
+      <!-- Toggle View -->
+      <button class="btn" id="btnToggleView">📱 Mở Giao diện ĐT</button>
+
+      <!-- Random Picker -->
+      <button class="btn btn-gold" id="btnOpenPicker">🎲 Quay số 4 HS</button>
+
+      <!-- Leaderboard -->
+      <button class="btn" id="btnLeaderboard">🏆 Sổ điểm 10A6</button>
+
+      <!-- Sound Toggle -->
+      <button class="btn" id="btnSound">🔊 Âm thanh: BẬT</button>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <!-- HOST VIEW -->
+    <div id="hostView">
+      <div class="question-card">
+        <div class="question-header">
+          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <span class="question-badge">VẬT LÍ 10</span>
+            <span class="current-set-badge" id="currentSetNameBadge">Phiếu học tập 01</span>
+            <span style="font-weight: 800; font-size: 1.05rem;" id="currentQIndex">CÂU HỎI 1 / 8</span>
+            <button class="btn" id="btnEditCurrentQ" style="padding: 4px 10px; font-size: 0.78rem; background: rgba(56, 189, 248, 0.2); border-color: #38bdf8; color: #38bdf8; font-weight: 700;" title="Nhấp để sửa nội dung câu hỏi hoặc phương án A, B, C, D">
+              ✏️ Sửa câu & phương án
+            </button>
+          </div>
+
+          <div class="timer-pill" id="timerDisplay">30s</div>
+        </div>
+
+        <div class="question-title" id="questionTitle">Câu 1: ...</div>
+
+        <!-- ACTIVE STUDENT SELECTOR FOR DIRECT 1-CLICK -->
+        <div class="active-student-bar">
+          <span class="active-bar-title">👉 Nhấp vào phương án A, B, C, D để tích cho:</span>
+          <button class="student-pill-btn active" data-target="1" id="pill1">HS 1 (Đỏ)</button>
+          <button class="student-pill-btn" data-target="2" id="pill2">HS 2 (Lam)</button>
+          <button class="student-pill-btn" data-target="3" id="pill3">HS 3 (Vàng)</button>
+          <button class="student-pill-btn" data-target="4" id="pill4">HS 4 (Lục)</button>
+          <button class="student-pill-btn" data-target="all" id="pillAll" style="color: #fbbf24;">⭐ Cả 4 HS</button>
+        </div>
+
+        <!-- QUESTION BODY GRID (Chia 2 cột khi có hình minh họa) -->
+        <div class="question-body-grid" id="questionBodyGrid">
+          <!-- Cột 1: Hình ảnh đồ thị minh họa -->
+          <div id="questionImgWrap" style="text-align: center; margin: 0 0 10px; display: none;">
+            <img id="questionImg" src="" alt="Hình minh họa" style="max-height: 220px; max-width: 100%; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: white; padding: 6px; box-shadow: 0 4px 14px rgba(0,0,0,0.3);">
+          </div>
+
+          <!-- Cột 2: 4 phương án A, B, C, D -->
+          <div class="options-container" id="optionsContainer">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- Explanation -->
+        <div class="explanation-box" id="explanationBox">
+          <div class="explanation-title">💡 GIẢI THÍCH CHI TIẾT VÀ BAREM ĐÁP ÁN:</div>
+          <div class="explanation-content" id="explanationContent"></div>
+        </div>
+      </div>
+
+      <!-- 4 STUDENTS CARDS -->
+      <div>
+        <div class="slots-header">
+          <div class="slots-title">🎯 4 HỌC SINH ĐANG THI ĐẤU (Bấm nút [A] [B] [C] [D] để tích trực tiếp)</div>
+          <button class="btn btn-gold" id="btnQuickRoll">⚡ Quay 4 học sinh mới</button>
+        </div>
+
+        <div class="slots-grid" id="slotsContainer">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- ACTION BAR -->
+      <div class="action-bar">
+        <div style="display: flex; gap: 8px;">
+          <button class="btn" id="btnPrevQ">◀ Câu trước</button>
+          <button class="btn" id="btnNextQ">Câu tiếp ▶</button>
+          <button class="btn btn-danger" id="btnResetQ">↺ Đặt lại câu này</button>
+        </div>
+
+        <button class="btn-giant-reveal" id="btnRevealAnswer">
+          🎉 CÔNG BỐ ĐÁP ÁN & CHẤM ĐIỂM TỰ ĐỘNG
+        </button>
+
+        <div style="display: flex; gap: 6px; align-items: center; background: rgba(15,23,42,0.7); padding: 4px 10px; border-radius: 10px; border: 1px solid var(--card-border);">
+          <span style="font-size: 0.82rem; font-weight: 700; color: #94a3b8;">⏱️ Giờ:</span>
+          <button class="btn" id="btnTimerMinus5" style="padding: 4px 8px; font-size: 0.8rem; background: rgba(56, 189, 248, 0.15); border-color: #38bdf8; color: #38bdf8; font-weight: 800;" title="Bớt 5 giây">-5s</button>
+          <select id="selectTimerDuration" style="background: rgba(15,23,42,0.9); color: #38bdf8; border: 1px solid #38bdf8; border-radius: 6px; padding: 5px 8px; font-weight: 800; font-size: 0.92rem; cursor: pointer;" title="Chọn thời gian suy nghĩ">
+            <option value="15">15s</option>
+            <option value="20">20s</option>
+            <option value="30" selected>30s</option>
+            <option value="45">45s</option>
+            <option value="60">60s (1p)</option>
+            <option value="90">90s (1.5p)</option>
+            <option value="120">120s (2p)</option>
+            <option value="custom">✏️ Khác...</option>
+          </select>
+          <button class="btn" id="btnTimerPlus5" style="padding: 4px 8px; font-size: 0.8rem; background: rgba(56, 189, 248, 0.15); border-color: #38bdf8; color: #38bdf8; font-weight: 800;" title="Cộng thêm 5 giây">+5s</button>
+          <button class="btn btn-primary" id="btnStartTimer" style="padding: 6px 14px; font-weight: 800;" title="Bắt đầu hoặc Tạm dừng tính giờ">
+            ▶ Bắt đầu (30s)
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STUDENT VIEW (MOBILE) -->
+    <div id="studentView">
+      <div class="mobile-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+          <div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">TAY CẦM ĐIỀU KHIỂN HỌC SINH</div>
+            <div style="font-size: 1.15rem; font-weight: 800; color: #38bdf8;" id="mobStudentName">Học sinh 1</div>
+          </div>
+          <select id="mobSlotSelect" style="background: rgba(15,23,42,0.8); color: white; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--card-border); font-weight: 700;">
+            <option value="1">Vị trí 1 (Slot 1)</option>
+            <option value="2">Vị trí 2 (Slot 2)</option>
+            <option value="3">Vị trí 3 (Slot 3)</option>
+            <option value="4">Vị trí 4 (Slot 4)</option>
+          </select>
+        </div>
+
+        <div style="background: rgba(15,23,42,0.6); padding: 12px; border-radius: 10px;">
+          <div style="font-size: 0.85rem; color: #38bdf8; font-weight: 700;" id="mobQIndex">CÂU HỎI 1</div>
+          <div style="font-size: 1rem; font-weight: 700; margin-top: 4px;" id="mobQTitle">Nội dung câu hỏi...</div>
+        </div>
+
+        <div id="mobImgWrap" style="text-align: center; display: none;">
+          <img id="mobImg" src="" alt="Hình minh họa" style="max-height: 160px; max-width: 100%; border-radius: 6px; background: white; padding: 4px;">
+        </div>
+
+        <div style="text-align: center; font-size: 1rem; font-weight: 800; color: #fbbf24;" id="mobStatusMsg">
+          👉 Chạm vào 1 trong 4 phương án dưới đây để tích chọn:
+        </div>
+
+        <div class="mobile-choices">
+          <button class="btn-mobile-opt" data-choice="A" id="mobBtnA">A</button>
+          <button class="btn-mobile-opt" data-choice="B" id="mobBtnB">B</button>
+          <button class="btn-mobile-opt" data-choice="C" id="mobBtnC">C</button>
+          <button class="btn-mobile-opt" data-choice="D" id="mobBtnD">D</button>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 0.85rem;">Đã chọn: <b id="mobChosenText" style="color: #38bdf8; font-size: 1.2rem;">Chưa chọn</b></span>
+          <button class="btn" id="btnBackHost">Trở về Màn hình GV</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL: SỔ ĐIỂM -->
+  <div class="modal-overlay" id="leaderboardModal">
+    <div class="modal-box" style="max-width: 850px;">
+      <div class="modal-title-row">
+        <h3>🏆 SỔ ĐIỂM & BẢNG THEO DÕI LỚP 10A6</h3>
+        <button class="btn-close-modal" id="btnCloseScoreModal">&times;</button>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <span style="font-size: 0.88rem; color: var(--text-muted);">
+          Tổng số: <b>50 HS</b> | Đã kiểm tra: <b id="totalTestedDisplay" style="color: #38bdf8;">0</b>
+        </span>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-danger" id="btnResetScores" title="Xóa toàn bộ điểm thử nghiệm để bắt đầu dạy thật">
+            🔄 Xóa điểm thử nghiệm (Làm mới)
+          </button>
+          <button class="btn btn-primary" id="btnExportCSV">📥 Xuất Bảng Điểm (Excel / CSV)</button>
+        </div>
+      </div>
+
+      <div style="max-height: 440px; overflow-y: auto; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem;">
+          <thead style="background: rgba(15,23,42,0.9); position: sticky; top: 0;">
+            <tr style="border-bottom: 2px solid rgba(255,255,255,0.15); color: #94a3b8;">
+              <th style="padding: 10px;">STT</th>
+              <th style="padding: 10px;">HỌ VÀ TÊN</th>
+              <th style="padding: 10px;">GIỚI TÍNH</th>
+              <th style="padding: 10px; text-align: center;">SỐ LẦN GỌI</th>
+              <th style="padding: 10px; text-align: center;">SỐ CÂU ĐÚNG</th>
+              <th style="padding: 10px; text-align: right;">ĐIỂM ĐÁNH GIÁ</th>
+            </tr>
+          </thead>
+          <tbody id="scoreTableBody"></tbody>
+        </table>
+      </div>
+
+      <div style="margin-top: 16px; display: flex; justify-content: flex-end;">
+        <button class="btn" id="btnCloseScoreModal2">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: RANDOM PICKER -->
+  <div class="modal-overlay" id="pickerModal">
+    <div class="modal-box">
+      <div class="modal-title-row">
+        <h3>🎲 QUAY SỐ 4 HỌC SINH LỚP 10A6</h3>
+        <button class="btn-close-modal" id="btnClosePicker">&times;</button>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0;">
+        <div style="background: rgba(15,23,42,0.7); border: 2px dashed rgba(255,255,255,0.2); border-radius: 12px; padding: 16px; text-align: center;" id="slotPick1">
+          <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 800;">VỊ TRÍ 1</div>
+          <div style="font-size: 1.15rem; font-weight: 800;" id="namePick1">Chưa chọn</div>
+        </div>
+        <div style="background: rgba(15,23,42,0.7); border: 2px dashed rgba(255,255,255,0.2); border-radius: 12px; padding: 16px; text-align: center;" id="slotPick2">
+          <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 800;">VỊ TRÍ 2</div>
+          <div style="font-size: 1.15rem; font-weight: 800;" id="namePick2">Chưa chọn</div>
+        </div>
+        <div style="background: rgba(15,23,42,0.7); border: 2px dashed rgba(255,255,255,0.2); border-radius: 12px; padding: 16px; text-align: center;" id="slotPick3">
+          <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 800;">VỊ TRÍ 3</div>
+          <div style="font-size: 1.15rem; font-weight: 800;" id="namePick3">Chưa chọn</div>
+        </div>
+        <div style="background: rgba(15,23,42,0.7); border: 2px dashed rgba(255,255,255,0.2); border-radius: 12px; padding: 16px; text-align: center;" id="slotPick4">
+          <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 800;">VỊ TRÍ 4</div>
+          <div style="font-size: 1.15rem; font-weight: 800;" id="namePick4">Chưa chọn</div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px;">
+        <button class="btn btn-gold" id="btnSpinAll">🎰 QUAY SỐ NGAY</button>
+        <button class="btn btn-success" id="btnApplyPicker">✓ ÁP DỤNG VÀO BÀI THI</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: QR CODE KẾT NỐI -->
+  <div class="modal-overlay" id="qrModal">
+    <div class="modal-box" style="text-align: center; max-width: 540px;">
+      <div class="modal-title-row">
+        <h3>📲 KẾT NỐI ĐIỆN THOẠI HỌC SINH</h3>
+        <button class="btn-close-modal" id="btnCloseQR">&times;</button>
+      </div>
+
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">
+        Học sinh quét mã QR bên dưới bằng camera hoặc Zalo để mở giao diện làm bài:
+      </p>
+
+      <div class="qr-box">
+        <canvas id="qrCanvas" width="200" height="200"></canvas>
+        <div style="font-size: 1rem; font-weight: 800; color: #38bdf8;">
+          MÃ PHÒNG LỚP HỌC: <span style="color: #fbbf24; letter-spacing: 2px;">10A6</span>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: center; gap: 10px; margin-top: 14px;">
+        <button class="btn btn-primary" id="btnOpenStudentTab">📱 Thử mở tab Điện thoại</button>
+        <button class="btn" id="btnCloseQR2">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: QUẢN LÝ BỘ ĐỀ (SETS MODAL) -->
+  <div class="modal-overlay" id="setsModal">
+    <div class="modal-box" style="max-width: 800px;">
+      <div class="modal-title-row">
+        <h3>📚 QUẢN LÝ & NẠP BỘ CÂU HỎI MỚI</h3>
+        <button class="btn-close-modal" id="btnCloseSets">&times;</button>
+      </div>
+
+      <div class="tabs-nav">
+        <button class="tab-btn active" data-tab="tab-list">Danh sách bộ đề</button>
+        <button class="tab-btn" data-tab="tab-import">Dán từ Word / Text</button>
+      </div>
+
+      <div class="tab-pane active" id="tab-list">
+        <div id="setsListContainer" style="display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto;"></div>
+      </div>
+
+      <div class="tab-pane" id="tab-import">
+        <input type="text" id="newSetNameInput" placeholder="Tên bộ đề mới..." style="padding: 10px; border-radius: 8px; border: 1px solid var(--card-border); background: rgba(15,23,42,0.8); color: white; font-weight: 700;">
+        <textarea id="importTextInput" placeholder="Câu 1: ...&#10;A. ...&#10;B. ...&#10;C. ...&#10;D. ...&#10;Đáp án: A" style="width: 100%; height: 200px; background: rgba(15,23,42,0.85); color: white; padding: 10px; border-radius: 8px; border: 1px solid var(--card-border); font-family: monospace;"></textarea>
+        <div style="display: flex; justify-content: flex-end;">
+          <button class="btn btn-success" id="btnSaveNewSet">✓ Phân tích & Lưu bộ đề</button>
+        </div>
+      </div>
+
+      <div style="margin-top: 14px; display: flex; justify-content: flex-end;">
+        <button class="btn" id="btnCloseSets2">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- MODAL: CHỈNH SỬA CÂU HỎI & PHƯƠNG ÁN (EDIT QUESTION MODAL) -->
+  <div class="modal-overlay" id="editQModal">
+    <div class="modal-box" style="max-width: 750px;">
+      <div class="modal-title-row">
+        <h3>✏️ CHỈNH SỬA NỘI DUNG CÂU HỎI & PHƯƠNG ÁN</h3>
+        <button class="btn-close-modal" id="btnCloseEditQ">&times;</button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div>
+          <label style="font-size: 0.85rem; font-weight: 700; color: #38bdf8; display: block; margin-bottom: 4px;">
+            Tiêu đề câu hỏi:
+          </label>
+          <textarea id="editQTitle" style="width: 100%; height: 60px; background: rgba(15,23,42,0.85); color: white; border: 1px solid var(--card-border); border-radius: 8px; padding: 8px; font-size: 0.95rem; resize: vertical;"></textarea>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div>
+            <label style="font-size: 0.82rem; font-weight: 700; color: #cbd5e1; display: block; margin-bottom: 3px;">
+              Phương án A:
+            </label>
+            <input type="text" id="editOptA" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--card-border); background: rgba(15,23,42,0.85); color: white;">
+          </div>
+          <div>
+            <label style="font-size: 0.82rem; font-weight: 700; color: #cbd5e1; display: block; margin-bottom: 3px;">
+              Phương án B:
+            </label>
+            <input type="text" id="editOptB" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--card-border); background: rgba(15,23,42,0.85); color: white;">
+          </div>
+          <div>
+            <label style="font-size: 0.82rem; font-weight: 700; color: #cbd5e1; display: block; margin-bottom: 3px;">
+              Phương án C:
+            </label>
+            <input type="text" id="editOptC" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--card-border); background: rgba(15,23,42,0.85); color: white;">
+          </div>
+          <div>
+            <label style="font-size: 0.82rem; font-weight: 700; color: #cbd5e1; display: block; margin-bottom: 3px;">
+              Phương án D:
+            </label>
+            <input type="text" id="editOptD" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--card-border); background: rgba(15,23,42,0.85); color: white;">
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 18px; align-items: center; flex-wrap: wrap;">
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <label style="font-size: 0.85rem; font-weight: 700; color: #4ade80;">
+              Đáp án đúng:
+            </label>
+            <select id="editQCorrect" style="background: rgba(15,23,42,0.9); color: #4ade80; border: 1px solid #22c55e; padding: 6px 14px; border-radius: 6px; font-weight: 800; font-size: 1rem;">
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+              <option value="D">D</option>
+            </select>
+          </div>
+
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <label style="font-size: 0.85rem; font-weight: 700; color: #38bdf8;">
+              ⏱️ Thời gian suy nghĩ:
+            </label>
+            <input type="number" id="editQDuration" min="5" max="300" step="5" style="width: 85px; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--card-border); background: rgba(15,23,42,0.85); color: #38bdf8; font-weight: 800; font-size: 1rem;" placeholder="30">
+            <span style="font-size: 0.85rem; color: #94a3b8;">giây</span>
+          </div>
+        </div>
+
+        <div>
+          <label style="font-size: 0.85rem; font-weight: 700; color: #38bdf8; display: block; margin-bottom: 4px;">
+            Giải thích chi tiết:
+          </label>
+          <textarea id="editQExp" style="width: 100%; height: 70px; background: rgba(15,23,42,0.85); color: white; border: 1px solid var(--card-border); border-radius: 8px; padding: 8px; font-size: 0.9rem; resize: vertical;"></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;">
+          <button class="btn" id="btnCancelEditQ">Hủy</button>
+          <button class="btn btn-success" id="btnSaveEditQ" style="padding: 8px 18px; font-weight: 800;">
+            ✓ Lưu Thay Đổi
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    /* =========================================================================
+       1. DATA: 50 STUDENTS & QUESTION SETS
+       ========================================================================= */
+    const ALL_STUDENTS = [{"stt": 1, "name": "Tống Phúc Bảo An", "gender": "Nam", "dob": "11/01/2011"}, {"stt": 2, "name": "Bùi Tuấn Anh", "gender": "Nam", "dob": "27/12/2011"}, {"stt": 3, "name": "Dương Quỳnh Anh", "gender": "Nữ", "dob": "02/09/2011"}, {"stt": 4, "name": "Đặng Tuấn Anh", "gender": "Nam", "dob": "04/07/2011"}, {"stt": 5, "name": "Lê Đăng Hoàng Anh", "gender": "Nam", "dob": "19/05/2011"}, {"stt": 6, "name": "Nguyễn Việt Anh", "gender": "Nam", "dob": "27/10/2011"}, {"stt": 7, "name": "Đỗ Ngọc Bảo", "gender": "Nam", "dob": "15/04/2011"}, {"stt": 8, "name": "Nguyễn Xuân Bắc", "gender": "Nam", "dob": "04/07/2011"}, {"stt": 9, "name": "La Khánh Chi", "gender": "Nữ", "dob": "14/01/2011"}, {"stt": 10, "name": "Trần Khánh Chi", "gender": "Nữ", "dob": "12/06/2011"}, {"stt": 11, "name": "Đinh Ngọc Diệp", "gender": "Nữ", "dob": "16/11/2011"}, {"stt": 12, "name": "Hoàng Việt Dũng", "gender": "Nam", "dob": "23/08/2011"}, {"stt": 13, "name": "Chu Đức Duy", "gender": "Nam", "dob": "15/05/2011"}, {"stt": 14, "name": "Nguyễn Khương Duy", "gender": "Nam", "dob": "31/03/2011"}, {"stt": 15, "name": "Trần Khải Đạt", "gender": "Nam", "dob": "05/09/2011"}, {"stt": 16, "name": "Vũ Thành Đạt", "gender": "Nam", "dob": "21/01/2011"}, {"stt": 17, "name": "Trần Quang Đức", "gender": "Nam", "dob": "11/08/2011"}, {"stt": 18, "name": "Triệu Minh Đức", "gender": "Nam", "dob": "10/10/2011"}, {"stt": 19, "name": "Lê Thị Thanh Hà", "gender": "Nữ", "dob": "24/04/2011"}, {"stt": 20, "name": "Nguyễn Hoàng Ngọc Hà", "gender": "Nữ", "dob": "01/01/2011"}, {"stt": 21, "name": "Trần Triệu Bảo Hân", "gender": "Nữ", "dob": "09/06/2011"}, {"stt": 22, "name": "Dương Minh Hiếu", "gender": "Nam", "dob": "19/02/2011"}, {"stt": 23, "name": "Nguyễn Trung Hiếu", "gender": "Nam", "dob": "22/01/2011"}, {"stt": 24, "name": "Nguyễn Mai Huy Hoàng", "gender": "Nam", "dob": "28/04/2011"}, {"stt": 25, "name": "Lê Kim Hồng", "gender": "Nữ", "dob": "17/11/2011"}, {"stt": 26, "name": "Lê Mai Hương", "gender": "Nữ", "dob": "10/02/2011"}, {"stt": 27, "name": "Trần Thu Hường", "gender": "Nữ", "dob": "10/04/2011"}, {"stt": 28, "name": "Hoàng Tấn Khải", "gender": "Nam", "dob": "28/05/2011"}, {"stt": 29, "name": "Nguyễn Đình Khánh", "gender": "Nam", "dob": "05/08/2011"}, {"stt": 30, "name": "Nguyễn Quốc Khánh", "gender": "Nam", "dob": "12/08/2011"}, {"stt": 31, "name": "Nguyễn Duy Khoa", "gender": "Nam", "dob": "27/08/2011"}, {"stt": 32, "name": "Phạm Ngọc Linh", "gender": "Nữ", "dob": "15/11/2011"}, {"stt": 33, "name": "Trần Đình Lực", "gender": "Nam", "dob": "29/06/2011"}, {"stt": 34, "name": "Lê Quang Minh", "gender": "Nam", "dob": "11/06/2011"}, {"stt": 35, "name": "Lê Quang Minh", "gender": "Nam", "dob": "05/10/2011"}, {"stt": 36, "name": "Nguyễn Vũ Trà My", "gender": "Nữ", "dob": "02/01/2011"}, {"stt": 37, "name": "Lê Trần Kim Ngân", "gender": "Nữ", "dob": "06/10/2011"}, {"stt": 38, "name": "Lương Bình Nguyên", "gender": "Nam", "dob": "14/04/2011"}, {"stt": 39, "name": "Phạm Thị Yến Nhi", "gender": "Nữ", "dob": "06/07/2011"}, {"stt": 40, "name": "Ngô Quỳnh Nhung", "gender": "Nữ", "dob": "18/06/2011"}, {"stt": 41, "name": "Văn Thị Hồng Nhung", "gender": "Nữ", "dob": "22/04/2011"}, {"stt": 42, "name": "Nguyễn Bình Phúc Như", "gender": "Nữ", "dob": "25/11/2011"}, {"stt": 43, "name": "Phùng Thị Quỳnh Như", "gender": "Nữ", "dob": "03/08/2011"}, {"stt": 44, "name": "Ngô Thu Phương", "gender": "Nữ", "dob": "03/03/2011"}, {"stt": 45, "name": "Đỗ Quang Sáng", "gender": "Nam", "dob": "08/02/2011"}, {"stt": 46, "name": "Hoàng Thị Thương", "gender": "Nữ", "dob": "25/09/2011"}, {"stt": 47, "name": "Vũ Đức Trọng", "gender": "Nam", "dob": "12/02/2011"}, {"stt": 48, "name": "Lã Minh Tú", "gender": "Nam", "dob": "30/03/2011"}, {"stt": 49, "name": "Nguyễn Ngọc Tường Vy", "gender": "Nữ", "dob": "18/09/2011"}, {"stt": 50, "name": "Nguyễn Trần Thảo Vy", "gender": "Nữ", "dob": "06/12/2011"}];
+
+    const ScoreTracker = {};
+    ALL_STUDENTS.forEach(s => {
+      ScoreTracker[s.stt] = {
+        stt: s.stt,
+        name: s.name,
+        gender: s.gender,
+        timesCalled: 0,
+        correctAnswers: 0,
+        totalScore: 0
+      };
+    });
+
+    const QUESTION_SETS = [
+      {"id": "set-phieu-01", "title": "Phiếu học tập 01: Đồ thị độ dịch chuyển - thời gian", "questions": [{"id": 1, "title": "Câu 1: Cặp đồ thị nào ở hình dưới đây là của chuyển động thẳng đều?", "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAlYAAAB/CAMAAAAaR3z6AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAJnUExURf////z8/P39/f7+/vv7+/n5+fr6+vj4+J6enpqamvf393d3d2hoaPLy8tPT0+zs7Onp6dDQ0Pb29uLi4mxsbPT09MTExNra2ktLS6ioqJWVlVZWVuvr642NjZycnPDw8O/v77a2tnJycoKCgnFxcW1tbX5+fk5OTsDAwPX19Xx8fPHx8eTk5GVlZY+Pj8jIyFFRUcPDwz8/P9zc3Nvb29TU1IyMjE1NTWdnZ2JiYmNjY0xMTPPz8+Dg4D09PZGRkU9PT1NTU8XFxTo6OkRERIGBgT4+PtnZ2VpaWmpqas7OzlVVVaGhoe3t7aKionBwcI6OjuXl5YuLi3l5eXt7ezk5OV5eXtbW1lxcXMLCwkFBQaurq2FhYaenp2ZmZoiIiDs7O97e3uHh4d/f31RUVKqqqnh4eDc3N7e3t9fX18rKyrGxsVlZWTw8PLW1tXZ2du7u7oSEhEJCQpiYmIODg2tra76+vldXV7S0tJ2dnWBgYN3d3V9fX5CQkOrq6nV1ddjY2EBAQKSkpFBQUDU1NUNDQ3R0dEVFRby8vDg4OKCgoNHR0bOzs7q6upmZmW5ubkdHR1hYWJSUlL+/v4eHh7KysuPj40pKSsfHx8zMzLi4uMvLy2RkZFtbW3Nzc4mJiX9/fzY2Nl1dXX19fW9vb8/Pz729vc3NzcbGxujo6NLS0ubm5p+fn8HBwbu7u6amplJSUqmpqZeXl6WlpUhISJKSkrm5uUlJSaOjo5ubm9XV1WlpaXp6eufn566urpaWlsnJyYqKirCwsICAgDQ0NJOTk6+vr0ZGRqysrK2trYaGhoWFhQAAAHO8CfMAAADNdFJOU////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////wAh79wcAAAACXBIWXMAAA7DAAAOwwHHb6hkAAARaElEQVR4Xu1dTaKzKgzt3G0xYw8ycs6cPTh3E67Chb1zEuzP/W4tekWwz9PW2tZqDOGQBMTbhQsXLly4cOHChQsXLly4UDk8Hhcu7IrLpC5kQN9fbHVhd7Qtl9UZlg8ikh/k0+0W4vuF96ilEClH00Zp/FgTbQXTURhnoz25Xt+L4Vk19ajpqci44muQzI9tM7RNlKixo35dAaAtMffQOv08GCsrRSDqmd+4fLwXhr8N053P55XScKZtWxMbwWAnF3VXAaAvM9KaoCuK1E+mKSmaHPtuS1ippVEepyjJYKUgy2NAO+M7A7YCvDOTqUVXLD0hqibakp/MNDeHxwMyRDHu6305aZ7gPSpeFKQzVoUsjY7mjbaPS1AXSo4S1iEb0LUBDpYI5BvY/FSujfahHSAHnIbZmOwEyQrD93ZqushWVFFfReE1wpquFWFGlNtU0H/5F8GOPYpRNGUhnVE363jQrumBxiU/D8aY4kXYWdfBmGBWbJShoCoYFFEWNQOzApQP6M7wUx1oGnXY/W00lG4qKJs0eoMlRYnSIE3ZfB+cYWrHOzWrWzsV5fMnOCGnXs3KWFRAyyi+GsOCMUlw42/9QM+BEUUpiEW5mIuBQzNBWbIqXxRBsEztwbeiDIPw+VRD4Q12hMvHdKgIY8XYK5BrhodoMyOgjZb3UvAOwQNrnYhDP5Q2X1RZklrwo7jsvpmmqW0m/aUwGtO4Zk4w3GxdTSBkGuaCQzNY2u8bzSDZDiIIMxTz9SICzIp5IWErhvTqJJeH79p2cDEditZZgpuqLIsQgdAglhNM1dPP2Q7G9YgEC2e04aSzdVG2ArpJ+KE6aCNYKYqzFZz2514IUnth+AZxcmjmdOhlVhswFDerYJ/5sriyIMvQIspy1bNV+Qr4HuXZyvfPnd323hVXEL7rxjDHx2OlZhV9qzpR3qyIB13VwFZRmvh2NYIbUAFbxXdFFcp6EWmbWckuuHg9vR3RXr7VBzypvj6PYTNb6VllM6uLrVbA1GdWmoBcCSUq5kpy2dVlVitQn7I2shWsaZhyJnavSHAFqogEX7C1EfSDnSRfnwlVR4JV+FZP+Ba2gjU5YyR1ksmwrkZwBSo0q7W+VTSjfgKdZBzjU3UkOJq9RjDso7/zsxX0QGPqpinfNU3U9f+ArUSVfwf2MUeC3N1+Lyw388aGRhDH6sxk83qJVZvVjr7VxmJ7hTXGWrv36y8R2Xq2giJ6GTaWFf+HSHAXk+JedBS0DLva8eG0sDdhS94KXJU9ov0f9AmiyLaX2wusceP+GCjbRvnWN4I+ctUuCnmL/0MkOMQref4Kn01Zm8VbZVY4Cr317C0g8LV9gqJDvgYE03F00l9x5kiQhI1Hj4Y8v1V9K1tp9edysPtdoVlhlj3dtxIVwKoO4KrazepPeSvo0d8CYul+H6M6O1sBIO78U7nwSF8bCYoaQ28mucRhH5/93H2CXrjqmOL+0j5BNSXYgZGLR/ewKeDMbAWM4KqD6sWX+lYAr6YzVmZRiK8/o0KzSvGt4vn7Rrlqpzq2iDyR4E4Fucm3ogLl2bf3yrmDLMQ5R4fGk/cufxb0DqmAMfjc7QHsUpAb2UoFcJMxPkqzEyocHZrUCEqpNBy0cBQsJ5OqFVvMSs3ID05inj2NqspGMNGsbr41032ervzIoimexh4luomtpGp2RuZXEkH2w0nzVuRsZw6dt0875ffGTpmizZHgaKb7rFQ7KvOsbMWr66d5buvs4HGs9qLv+4wzk/4Z2xpBz+6aOEptX1WeLm81n37DSVjx4SjLQiSYpVMee97hFNZGgtryBhunC9pdiWdjK9EHFuCqg2eurU9TT1jNVtTiwO6a+HlnVGhWn3wragRcpdOxHmda3zSCgVoLbUYv4nx5K7EqaOS4GFDxbWzVsrsml1lVMv3rEz77Vo8WUF2EY/BVV974gMA2o2t6wiw7YkBzOFd9FVt5BDwyS3m2SnmmORjITVAEBwY90nfZNPMT32JWVFg/6S0xsqFCl/0NW82GJFYl3xwHHu8rxluJ4rr8Q9RO1gjy5gCHx4CK7xhvBa2Nk4n3ysmH87CVmhIzePmuXl7ClzSC7ATss6fAT9Un6H0wZprv13MwXX1HJEgF8l4w8siHM/lWXi4O4aWt8vFgfAVb8d4vesl5Xv2dw6xi1fJQSrPzgLNknDnLruQEsrdwTI/Q3hlcduiBqmALiKpWxKaA07LVXCdvPmd3zSsOuXJzFd74VjKOfyJXFTKsus3qk29FtbG7hjnQA/R3ikZQGdzQLShjUjzqefNWqr4+b3fNK07SCHJmUCNj3kQxh6jmB049Y4y/Obn07SjFncRlp7M56e1LSpgUcVrfSqqhm0wXp4M5olZW3ieoKsCL3voRTsF7nDESpPqotA4hNCdWPQyVsxU0IcromAWdP5TBOdlKdDZOtKojcYo+QT9atIAFTYqo26zeRoLsRbVTg3h/pq4jULtvJbWti/N3FDWsE0aCYkbsrjm8F7X+PkFwOBQTu9wLGtZJRzAggm57yVXp8xjUzVaiCbWqI5XyD3jkU/pWvrFPifXjFFixWUVP4Hh/83ecbAQDdAcFtuYtjWVFtS57rFl+NGJVx1W0dzgXW4m+2F3TFdFc5X2CsCq5QdJxMcxbnK0R9DcHqypUuvU2grQkX0sLCJwtEuS0VcwrFKmQNeet4K1LdlhWi7PVySLBkd01XCmiuGrZiobEuZeqKcszNIJ3E5pd0lKouU8wXiJSCeqOBGlWYlTiO4C9pubQTsAfqJit0EDTqsrp5gHKcAK2UlfB30Jj4nCPUqg4waA3ya3BqgRVm9WLbyXTVqmBlUK1bMVxZ0dcI5KMM0SCUJUPnZ3aMpdSPlBtn6CDz1nk6uV3OMfoUH+LkzSVjZ0rZSsPq+KUJsRe6pH9cLFth8doauPJ3n0r30527gTcuK83kL2l7rISs4K4lJgvMStaVQYanY+hi3XIHwmuI5h4Lvo2+1Zdw1k7NpzdIihYPFwiavIYVPLO2NgCPgE//fGpi/m1AQdUwA2Sxb/EBAMnGJLrIDae4ztwd6t2WUufoArNZW/szFU7+wfY3aDX9G7ZbXaz2iwZ/qMjGGBVbaara3SnyQVSTSMYur4fKXTH+crhV8VTwCLxVBYR98EYaYOx8g/5eX39eco/uCBb3btrNuxoGdifKC19v5U0gr6znE7fDtpjM4FU5uuX9fXXR9wHdt5unCDygEhw/XB9H/8CtmJ3jdYZfLV6Rx/gx9bdVuitPFtJkTvDOZeGBtWtp1nxuTu4T8O9t3Ln+w8QuXRVkL0C2skMLLlUk/C+4zziju4CR3rEqWByACK10Ft0If6Bfvu8rKNPcIjTzvvGyL19WPb3R3z+9YVd3fcpt49NAjbktnjZma3i591fAVbf6j1wZPEJwZmm75y18B1IVZPrAZfpAaOnePHY/wAcOXSul/qKV2QrrGV4xoU+3kB+cDHV4gfb+ZARHa1qTJuLh9KPfds6cfmgKdtaPFs8szysmH4rbmUCfG8omA8Nwhv2ygsjR+xL9lIX5WnfMuLQQEHGNtpS5mUrmBMUtmBUESAr3cQ3O91b6BfwCAiVVnhI4IO2aVrjWNIM3l85L8MDSGXSAIdBNg3WwbYA5xo8uHT4IOs7PbFzspWJRvMKFaJtO5QzXGSps0LtiSeyGrSnAeI0qFaL7igvZMPveDaxEyILEA90fkjNqHjvbAc9hg7lRk9m7Dq+Xp/7vdOpbDpIl1Yco/RCcNuZ67OiQUDwq+Z4bO+bVn70g3p4doI55oHuGF4lHm65R32ab6uHktSVTIB58KKBtGIYZz5AcyNf5AWakNg6J4knFVC2HBk4Z8ZoAg/y7jiBjYD82EnGEWH93i3xHdpkSKNhzPuyxPekA/k95LplFBAPkZ4ncDJJG/4UWjTNXM0Kt852HxVwyDt1v5569947wc+wuvhhkCoojJIL5KsGJtW6D0XpaOIUfsw6Dz3Pv0FInmghVmYTIfpkDtU/cPlYm5cLwAZhpTfieCsNqazda0dXBuAgTbskXTfJj1zElGxmoBEcl85axAlWZkr1o00P/TcA++4Qb3GERPxmERL2SMG5xOmpgSdW1tWkQ2EzJ+OBErcGurkGIsxJ/9dGeLjkUoq/HIlf0az0p/DXrHHaudhOKtUC+OPYWtf1CLwy1jsRwq9oBB9shQYn7WwBbMhtn158Wwa3aBfp4F/4thGXCl5yfn4I9GYWuhtHNn34FSHa6ksT77Xv7d5/Qrb1sYF7D/waeK2kBF6Z4WFWifI3EmFROPpWn05Cwa1Zyi3UTHfEB816fUJorITvSRsrOl4G6IMTxzQvvB/bt10T/Boa0l8REq4oQ/wn/u3+4f5cBH5v7pX+d8iPsL4PpLYD5AjpA+QH6WPD897efAYO0fNfjDd73vIppFwCyqjAxJRPOkb4rZO1LntdpFgIPJekG03PShH6tWTlA0p+4JMf8ArD7YMe9Fet6u/wcw/Le3wFtr1vnvo/slUifMMW3IfOzPmPFAxSXZmJU49sIYR6AXzitfBj1+9A8EknF0vxt23lO2cax56kdZE86h5q7DgFmKV+M4D3uk8NCge8oG1bUSrrQQ7iARLZboVLGZyxzC+vamV62ZpH6cWsPKLclP9vMKstmHXF1kHlStPbJ/H8wFFysaMrHQMdjWEKCAlUDEkWam51CQOTVyvZ/TNkf35EqCbhGsw7FWCrRPvjRkPftGT3dARNndKsYmapSbNK6BXYW1H/AmURKKI0OzImIaV0wNxiiDvDNyw5Jt5i6+kb1kWXMAH/ciP4B/gGmkG4hvNdcScXTk6XiC1qHCTLLB6cstWtS3Nij2EruPgowgmnJrl5CXbHlDY+ivd2yy26gkULLw0IMuMgliA0EZW4iDlI2B3S3MidJXwPYRKPgvY/riVinfQxc/poBG9jgo4AZavscGhjRDCY1Zya+9DmiAIsb0P/SRWyxRp9dXIj25FZr1buc9+BtBjAfL7OIxtbtfTsdO8hrehmpJ45tpNNU7cHYorria3C9C40f4GmM3JDeKCbuEazYscwIt2Eit8tX/WgO1h9BuogiCideA+adfUJjgObqZ3BY/ogfRY6Aki6OpOw+szXgT4IcfetUPU+D8ClUI1kCnKLB68F9k6zerBVbHOWD42oM4NsGv+JKIHrktoFdT06PN+CfJJDW/BZsFs1Wu8+JMcOg9P7kz8SDGQref+AYDmSPzO8OJYPtoJZ4Zh+zSC0XQFTwvFFFNQrpvpUB5Hol/DoA9kX6kRqfVvRGZwZ9BZwurNvhVUdGLUEbDRrKIumHhhk7GlkKxxLR0exUmY/9K/QGePVrMZpiN0ZSWbVZshbcYfRrFSQbmHkzaFAg0I5ntiqz9nRuRJiS69sRaAUyyhP2VLNCjZ1795MaARHm2Pgxuysz4qhpmqAt6IZLnuxe99IjVzGXKi5C1cMSrngybdKIYc8cBIsqFnBoWpADtSBttUfkJ5TWgUNnSJbSf9bFeggFmURebCQ1Mxn4bDF543+DLAVjqJsxcoeLwJTaysAHUuqZgWJojjwMz9GOUCG9CzQq1mJJOIdHFAsH4HA78d1BP3ninec4DqK80ckyEH7/LGA/pigwoFjl884j8wbE/yGHNJyn4OhF0O2YjItgTUPAruUHghyeWiBEvsVpAGv5DSbFUVrEjpLssBrD+oPeIfSLCCQHFLDYvaAw8TWpUPzAZJJj9sdoRLBFF66SJStSFzK9elZv90RfsvE4ssCRjWjR3ODw1OCToy+oCxngXgO/t7y6OXvOpangPZwyN9GCawYObAzqAM/ezHey1i5CiD9Zj/Kp5LMh8L/O8jT39jmFAJ80bj2AshYTmldH0txnK+KrhQVCUedEVjKk4tYPQtI+eaQKlwp3FvgTCmMb4T/lx1++erChQsXLly4cOHChQsX9sPt9h/hIM1kbTeJWgAAAABJRU5ErkJggg==", "options": {"A": "(I) và (III).", "B": "(I) và (IV).", "C": "(II) và (III).", "D": "(II) và (IV)."}, "correct": "B", "explanation": "• Đồ thị (I): Đồ thị độ dịch chuyển – thời gian (d - t) là đường thẳng xiên góc đi qua gốc O biểu diễn chuyển động thẳng đều theo chiều dương (d = v.t với v > 0 không đổi).\n• Đồ thị (II): Đồ thị d - t là đường thẳng nằm ngang song song Ot biểu diễn vật đứng yên (d không đổi).\n• Đồ thị (III): Đồ thị vận tốc – thời gian (v - t) là đường thẳng xiên góc biểu diễn chuyển động thẳng biến đổi đều (nhanh dần đều).\n• Đồ thị (IV): Đồ thị v - t là đường thẳng nằm ngang song song Ot biểu diễn vận tốc không đổi (v = hằng số), tức là chuyển động thẳng đều.\n⇒ Cặp đồ thị của chuyển động thẳng đều là (I) và (IV)."}, {"id": 2, "title": "Câu 2: Đồ thị độ dịch chuyển – thời gian của một vật chuyển động như hình vẽ. Nhận xét nào sau đây là đúng?", "image": "data:image/png;base64,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", "options": {"A": "Vật chuyển động ngược chiều dương với tốc độ 20 km/h.", "B": "Vật chuyển động cùng chiều dương với tốc độ 20 km/h.", "C": "Vật chuyển động ngược chiều dương với tốc độ 60 km/h.", "D": "Vật chuyển động cùng chiều dương với tốc độ 60 km/h."}, "correct": "A", "explanation": "Vận tốc của vật được xác định qua độ dốc của đồ thị d - t:\nv = (d₂ - d₁) / (t₂ - t₁) = (0 - 60) / (3 - 0) = -20 km/h.\n• Dấu âm (v < 0) chứng tỏ vật chuyển động ngược chiều dương.\n• Tốc độ của vật là độ lớn của vận tốc: |v| = 20 km/h."}, {"id": 3, "title": "Câu 3: Khi đồ thị độ dịch chuyển – thời gian có độ dốc lớn, điều này có nghĩa là gì về vận tốc của vật?", "image": null, "options": {"A": "Vận tốc của vật nhỏ.", "B": "Vận tốc của vật lớn.", "C": "Vật đang đứng yên.", "D": "Vật đang tăng tốc."}, "correct": "B", "explanation": "Trong đồ thị độ dịch chuyển – thời gian (d - t), hệ số góc (độ dốc) của đường đồ thị chính là vận tốc của vật (v = Δd / Δt). Độ dốc càng lớn đồng nghĩa với việc vật dịch chuyển được quãng đường càng dài trong cùng một khoảng thời gian, tức vận tốc của vật càng lớn."}, {"id": 4, "title": "Câu 4: Nếu một vật chuyển động thẳng đều và đổi chiều tại một điểm, đồ thị độ dịch chuyển – thời gian sẽ có đặc điểm gì tại điểm đó?", "image": null, "options": {"A": "Đồ thị sẽ có một điểm cực đại hoặc cực tiểu.", "B": "Đồ thị sẽ có một đoạn thẳng nằm ngang.", "C": "Đồ thị sẽ có một đoạn thẳng thẳng đứng.", "D": "Đồ thị sẽ có một điểm gấp khúc."}, "correct": "D", "explanation": "Khi chuyển động thẳng đều theo một chiều, đồ thị là một đoạn thẳng có độ dốc k₁; khi đổi chiều chuyển động thẳng đều theo chiều ngược lại, độ dốc đổi dấu thành k₂ (đoạn thẳng đổi hướng dốc). Tại thời điểm đổi chiều, đồ thị chuyển hướng đột ngột tạo thành một điểm gấp khúc."}, {"id": 5, "title": "Câu 5: Để xác định vận tốc của vật từ đồ thị độ dịch chuyển – thời gian trong chuyển động thẳng đều, ta cần làm gì?", "image": null, "options": {"A": "Tính diện tích dưới đồ thị.", "B": "Tính độ dốc của đồ thị.", "C": "Tính khoảng cách giữa hai điểm trên đồ thị.", "D": "Tính giá trị lớn nhất của đồ thị."}, "correct": "B", "explanation": "Vận tốc của vật trong chuyển động thẳng đều có giá trị bằng độ dốc (hệ số góc) của đồ thị độ dịch chuyển – thời gian: v = Δd / Δt."}, {"id": 6, "title": "Câu 6: Trong đồ thị độ dịch chuyển – thời gian, nếu độ dốc là một hằng số âm, điều này có nghĩa là gì?", "image": null, "options": {"A": "Vật đang tăng tốc theo chiều âm.", "B": "Vật đang chuyển động đều theo chiều âm.", "C": "Vật đang đứng yên.", "D": "Vật đang giảm tốc theo chiều âm."}, "correct": "B", "explanation": "• Độ dốc là hằng số: vận tốc v không đổi theo thời gian ⇒ vật chuyển động thẳng đều.\n• Độ dốc mang giá trị âm: v < 0 ⇒ vật chuyển động theo chiều âm (ngược chiều dương đã chọn)."}, {"id": 7, "title": "Câu 7: Khi vật chuyển động thẳng đều theo chiều dương đã chọn, đồ thị độ dịch chuyển – thời gian có đặc điểm gì?", "image": null, "options": {"A": "Đường thẳng nằm ngang.", "B": "Đường cong parabol.", "C": "Đường thẳng xiên góc hướng lên.", "D": "Đường thẳng xiên góc hướng xuống."}, "correct": "C", "explanation": "Chuyển động thẳng đều theo chiều dương có vận tốc v > 0 (không đổi). Độ dịch chuyển d = v.t tăng đều theo thời gian, do đó đồ thị d - t là một đường thẳng xiên góc hướng lên."}, {"id": 8, "title": "Câu 8: Đồ thị độ dịch chuyển - thời gian trong chuyển động thẳng của một chiếc xe có dạng như hình vẽ. Trong khoảng thời gian nào xe chuyển động thẳng đều?", "image": "data:image/png;base64,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", "options": {"A": "Chỉ trong khoảng thời gian từ 0 đến t1.", "B": "Chỉ trong khoảng thời gian từ t1 đến t2.", "C": "Trong khoảng thời gian từ 0 đến t2.", "D": "Không có lúc nào xe chuyển động thẳng đều."}, "correct": "A", "explanation": "• Trong khoảng thời gian từ 0 đến t₁: Đồ thị d - t là đường thẳng xiên góc hướng lên ⇒ xe chuyển động thẳng đều theo chiều dương.\n• Trong khoảng thời gian từ t₁ đến t₂: Đồ thị d - t là đường thẳng nằm ngang song song Ot ⇒ độ dịch chuyển không đổi ⇒ xe đứng yên.\n⇒ Xe chỉ chuyển động thẳng đều trong khoảng thời gian từ 0 đến t₁."}]},
+      {
+        id: "set-chuyen-dong-bien-doi",
+        title: "Bộ đề: Chuyển động biến đổi",
+        questions: [
+          {
+            id: 1,
+            title: "Câu 1: Chuyển động biến đổi là",
+            image: null,
+            options: {
+              A: "Chuyển động có vận tốc thay đổi.",
+              B: "Là những chuyển động có vận tốc tăng dần.",
+              C: "Là những chuyển động có vận tốc giảm dần.",
+              D: "Là những chuyển động đứng yên."
+            },
+            correct: "A",
+            explanation: "Chuyển động biến đổi là chuyển động có vận tốc thay đổi theo thời gian."
+          },
+          {
+            id: 2,
+            title: "Câu 2: Gia tốc là một đại lượng vật lí đặc trưng cho",
+            image: null,
+            options: {
+              A: "Sự nhanh hay chậm của chuyển động.",
+              B: "Sự biến thiên nhanh hay chậm của vận tốc theo thời gian.",
+              C: "Quãng đường vật đi được trong một đơn vị thời gian.",
+              D: "Sự thay đổi vị trí của vật trong không gian."
+            },
+            correct: "B",
+            explanation: "Gia tốc đặc trưng cho sự biến thiên nhanh hay chậm của vận tốc: a = Δv / Δt."
+          }
+        ]
+      }
+    ];
+
+    let currentSetId = QUESTION_SETS[0].id;
+
+    function getCurrentSet() {
+      return QUESTION_SETS.find(s => s.id === currentSetId) || QUESTION_SETS[0];
+    }
+
+    function getCurrentQuestions() {
+      return getCurrentSet().questions;
+    }
+
+    /* =========================================================================
+       2. SAFE SOUND ENGINE
+       ========================================================================= */
+        const SoundEngine = {
+      ctx: null,
+      enabled: true,
+      init() {
+        try {
+          if (!this.ctx) {
+            const AC = window.AudioContext || window.webkitAudioContext;
+            if (AC) this.ctx = new AC();
+          }
+          if (this.ctx && this.ctx.state === 'suspended') {
+            this.ctx.resume().catch(() => {});
+          }
+        } catch(e) {}
+      },
+      toggle() {
+        this.enabled = !this.enabled;
+        return this.enabled;
+      },
+      // 1. Tiếng Tích - Tắc đồng hồ cơ học đều đặn (30s -> 6s)
+      playTick(isEven = true) {
+        if (!this.enabled) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const t = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          
+          // Tiếng 'Tích' cao thanh (920Hz), tiếng 'Tắc' trầm ấm (680Hz)
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(isEven ? 920 : 680, t);
+          gain.gain.setValueAtTime(0.12, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.045);
+          
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.045);
+        } catch(e) {}
+      },
+      // 2. Tiếng đếm ngược khẩn cấp 5 giây cuối (5s -> 1s)
+      playWarningTick(sec) {
+        if (!this.enabled) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const t = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          
+          // Tần số tăng dần dồn dập: 950Hz -> 1350Hz
+          const freq = 950 + (6 - sec) * 90;
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, t);
+          gain.gain.setValueAtTime(0.22, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.085);
+          
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.085);
+        } catch(e) {}
+      },
+      // 3. Tiếng còi kết thúc / Hết giờ (0s)
+      playTimesUp() {
+        if (!this.enabled) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const t = this.ctx.currentTime;
+          [220, 330].forEach((freq) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(freq, t);
+            gain.gain.setValueAtTime(0.18, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(t);
+            osc.stop(t + 0.6);
+          });
+        } catch(e) {}
+      },
+      // 4. Tiếng lách cách bánh xe quay ngẫu nhiên (Wheel click)
+      playWheelClick() {
+        if (!this.enabled) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const t = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(750 + Math.random() * 200, t);
+          gain.gain.setValueAtTime(0.16, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.035);
+          
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.035);
+        } catch(e) {}
+      },
+      // 5. Hợp âm chiến thắng ngân vang khi dừng vòng quay (Fanfare)
+      playFanfare() {
+        if (!this.enabled) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const t = this.ctx.currentTime;
+          const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+          notes.forEach((freq, idx) => {
+            const noteTime = t + idx * 0.09;
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, noteTime);
+            gain.gain.setValueAtTime(0.2, noteTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, noteTime + 0.38);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(noteTime);
+            osc.stop(noteTime + 0.38);
+          });
+        } catch(e) {}
+      },
+      // 6. Tiếng chúc mừng khi công bố đáp án đúng
+      playCorrect() {
+        if (!this.enabled) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const t = this.ctx.currentTime;
+          [587.33, 880, 1174.66].forEach((freq, idx) => {
+            const noteTime = t + idx * 0.08;
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, noteTime);
+            gain.gain.setValueAtTime(0.22, noteTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, noteTime + 0.42);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(noteTime);
+            osc.stop(noteTime + 0.42);
+          });
+        } catch(e) {}
+      },
+      // 7. Tiếng buzz khi trả lời sai
+      playWrong() {
+        if (!this.enabled) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const t = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(220, t);
+          osc.frequency.linearRampToValueAtTime(160, t + 0.25);
+          gain.gain.setValueAtTime(0.16, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.25);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.25);
+        } catch(e) {}
+      },
+      // 8. Tiếng pop êm tai khi tích chọn phương án
+      playPop() {
+        if (!this.enabled) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const t = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(800, t);
+          osc.frequency.exponentialRampToValueAtTime(400, t + 0.05);
+          gain.gain.setValueAtTime(0.12, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.05);
+        } catch(e) {}
+      },
+      playTone(freq, duration = 0.08) {
+        this.playPop();
+      }
+    };
+
+    /* =========================================================================
+       3. APPLICATION STATE
+       ========================================================================= */
+    const State = {
+      currentQuestionIdx: 0,
+      defaultDuration: 30,
+      isTimerRunning: false,
+      isRevealed: false,
+      activeTarget: '1',
+      timerSeconds: 30,
+      timerInterval: null,
+      calledStudentIds: new Set(),
+
+      slots: [
+        { slotId: 1, student: ALL_STUDENTS[0], choice: null, score: 0 },
+        { slotId: 2, student: ALL_STUDENTS[1], choice: null, score: 0 },
+        { slotId: 3, student: ALL_STUDENTS[2], choice: null, score: 0 },
+        { slotId: 4, student: ALL_STUDENTS[3], choice: null, score: 0 }
+      ],
+
+      mySlotId: 1,
+      viewMode: 'host'
+    };
+
+    State.slots.forEach(s => State.calledStudentIds.add(s.student.stt));
+
+    /* =========================================================================
+       4. SELECTION LOGIC
+       ========================================================================= */
+    function selectAnswerForStudent(slotId, choice) {
+      const slot = State.slots.find(s => s.slotId === slotId);
+      if (!slot) return;
+
+      slot.choice = choice;
+      SoundEngine.playPop();
+
+      renderQuestion();
+      renderSlots();
+
+      if (State.viewMode === 'student') {
+        renderMobileView();
+      }
+    }
+
+    function handleCardOptionClick(choice) {
+      if (State.isRevealed) {
+        alert('Câu hỏi đã công bố đáp án! Thầy bấm "Câu tiếp" để sang câu mới.');
+        return;
+      }
+
+      if (State.activeTarget === 'all') {
+        State.slots.forEach(s => s.choice = choice);
+        SoundEngine.playPop();
+        renderQuestion();
+        renderSlots();
+      } else {
+        const slotId = parseInt(State.activeTarget);
+        selectAnswerForStudent(slotId, choice);
+      }
+    }
+
+    /* =========================================================================
+       5. FULLSCREEN PRESENTATION MODE
+       ========================================================================= */
+    function toggleFullscreen() {
+      const btn = document.getElementById('btnFullscreen');
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().then(() => {
+          btn.textContent = '🗗 Thu nhỏ';
+        }).catch(err => {
+          alert('Để vào chế độ toàn màn hình trình chiếu, Thầy vui lòng nhấn phím F11 trên bàn phím nhé ạ!');
+        });
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen().then(() => {
+            btn.textContent = '⛶ Trình chiếu';
+          }).catch(() => {});
+        }
+      }
+    }
+
+    document.addEventListener('fullscreenchange', () => {
+      const btn = document.getElementById('btnFullscreen');
+      if (document.fullscreenElement) {
+        btn.textContent = '🗗 Thu nhỏ';
+        document.body.classList.add('fullscreen-active');
+      } else {
+        btn.textContent = '⛶ Trình chiếu';
+        document.body.classList.remove('fullscreen-active');
+      }
+    });
+
+    /* =========================================================================
+       6. RENDER FUNCTIONS
+       ========================================================================= */
+    function renderQuestion() {
+      const curDur = getQuestionDuration();
+      if (!State.isTimerRunning && State.timerSeconds <= 0) {
+        State.timerSeconds = curDur;
+      }
+      const selDur = document.getElementById('selectTimerDuration');
+      if (selDur) {
+        let opt = selDur.querySelector(`option[value="${curDur}"]`);
+        if (!opt && curDur) {
+          opt = document.createElement('option');
+          opt.value = curDur;
+          opt.textContent = `${curDur}s`;
+          selDur.insertBefore(opt, selDur.lastElementChild);
+        }
+        if (opt) selDur.value = curDur;
+      }
+      const questions = getCurrentQuestions();
+      if (State.currentQuestionIdx >= questions.length) {
+        State.currentQuestionIdx = 0;
+      }
+      const q = questions[State.currentQuestionIdx];
+      const curSet = getCurrentSet();
+
+      document.getElementById('currentSetNameBadge').textContent = curSet.title;
+      document.getElementById('currentQIndex').textContent = `CÂU HỎI ${State.currentQuestionIdx + 1} / ${questions.length}`;
+      document.getElementById('questionTitle').textContent = q.title;
+
+      // Image & 2-column TV Layout Toggle
+      const imgWrap = document.getElementById('questionImgWrap');
+      const imgEl = document.getElementById('questionImg');
+      const bodyGrid = document.getElementById('questionBodyGrid');
+      if (q.image) {
+        imgEl.src = q.image;
+        imgWrap.style.display = 'block';
+        if (window.innerWidth >= 900) {
+          bodyGrid.style.display = 'grid';
+          bodyGrid.style.gridTemplateColumns = 'minmax(280px, 380px) 1fr';
+          bodyGrid.style.gap = '16px';
+          bodyGrid.style.alignItems = 'center';
+        } else {
+          bodyGrid.style.display = 'flex';
+          bodyGrid.style.flexDirection = 'column';
+        }
+      } else {
+        imgWrap.style.display = 'none';
+        bodyGrid.style.display = 'block';
+      }
+
+      // Options
+      const container = document.getElementById('optionsContainer');
+      container.innerHTML = '';
+
+      ['A', 'B', 'C', 'D'].forEach(letter => {
+        const card = document.createElement('div');
+        card.className = 'option-card';
+        card.id = `opt-card-${letter}`;
+
+        if (State.isRevealed) {
+          if (letter === q.correct) {
+            card.classList.add('is-correct');
+          } else {
+            card.classList.add('is-wrong-dim');
+          }
+        }
+
+        let tickButtonsHtml = '';
+        for (let i = 1; i <= 4; i++) {
+          const slot = State.slots[i - 1];
+          const isTicked = slot.choice === letter;
+          const activeClass = isTicked ? `active-${i}` : '';
+          const label = isTicked ? `✓ HS${i}` : `HS${i}`;
+          tickButtonsHtml += `
+            <button class="btn-tick-hs ${activeClass}" data-slot="${i}" data-choice="${letter}" title="Tích ${letter} cho ${slot.student.name}">
+              ${label}
+            </button>
+          `;
+        }
+
+        card.innerHTML = `
+          <div class="option-main">
+            <div class="option-char">${letter}</div>
+            <div class="option-body">${q.options[letter] || ''}</div>
+            <span class="badge-correct">✓ ĐÁP ÁN ĐÚNG</span>
+          </div>
+          <div class="option-student-ticks">
+            ${tickButtonsHtml}
+          </div>
+        `;
+
+        card.addEventListener('click', (e) => {
+          if (e.target.classList.contains('btn-tick-hs')) return;
+          handleCardOptionClick(letter);
+        });
+
+        container.appendChild(card);
+      });
+
+      document.querySelectorAll('.btn-tick-hs').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const slotId = parseInt(btn.dataset.slot);
+          const choice = btn.dataset.choice;
+          selectAnswerForStudent(slotId, choice);
+        });
+      });
+
+      // Explanation
+      const expBox = document.getElementById('explanationBox');
+      const expContent = document.getElementById('explanationContent');
+      if (State.isRevealed) {
+        expContent.textContent = q.explanation || "Không có giải thích chi tiết.";
+        expBox.style.display = 'block';
+      } else {
+        expBox.style.display = 'none';
+      }
+
+      document.getElementById('btnPrevQ').disabled = State.currentQuestionIdx === 0;
+      document.getElementById('btnNextQ').disabled = State.currentQuestionIdx === questions.length - 1;
+    }
+
+    function renderSlots() {
+      const container = document.getElementById('slotsContainer');
+      container.innerHTML = '';
+      const questions = getCurrentQuestions();
+      const currentQ = questions[State.currentQuestionIdx];
+
+      State.slots.forEach(slot => {
+        const card = document.createElement('div');
+        card.className = `slot-card slot-${slot.slotId}`;
+
+        let statusText = 'Chưa chọn';
+        let statusClass = '';
+
+        if (State.isRevealed) {
+          if (slot.choice === currentQ.correct) {
+            card.classList.add('eval-correct');
+            statusClass = 'res-correct';
+            statusText = `✓ ĐÚNG [ ${slot.choice} ] (+100đ)`;
+          } else if (slot.choice) {
+            card.classList.add('eval-wrong');
+            statusClass = 'res-wrong';
+            statusText = `✗ SAI (Chọn: ${slot.choice})`;
+          } else {
+            card.classList.add('eval-wrong');
+            statusClass = 'res-wrong';
+            statusText = 'Không làm (0đ)';
+          }
+        } else {
+          if (slot.choice) {
+            statusClass = 'has-chosen';
+            statusText = `✓ ĐÃ TÍCH: PHƯƠNG ÁN [ ${slot.choice} ]`;
+          }
+        }
+
+        card.innerHTML = `
+          <div class="slot-top">
+            <div class="slot-name-badge">
+              <div class="slot-avatar">${slot.slotId}</div>
+              <div class="student-text">
+                <div class="student-name">${slot.student.name}</div>
+                <div class="student-sub">STT: ${slot.student.stt} | Lớp 10A6</div>
+              </div>
+            </div>
+            <div class="slot-score">${slot.score} đ</div>
+          </div>
+
+          <div class="slot-banner ${statusClass}">
+            ${statusText}
+          </div>
+
+          <div class="slot-choice-btns">
+            ${['A', 'B', 'C', 'D'].map(ch => {
+              const isSel = slot.choice === ch;
+              const lbl = isSel ? `✓ ${ch}` : ch;
+              return `
+                <button class="btn-pick-choice ${isSel ? 'selected' : ''}" 
+                        data-slot="${slot.slotId}" 
+                        data-choice="${ch}">
+                  ${lbl}
+                </button>
+              `;
+            }).join('')}
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--text-muted);">
+            <span>Học sinh ${slot.slotId}</span>
+            <button class="btn" style="padding: 2px 6px; font-size: 0.72rem;" onclick="repickOneSlot(${slot.slotId})">🎲 Đổi em khác</button>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+
+      document.querySelectorAll('.btn-pick-choice').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const slotId = parseInt(btn.dataset.slot);
+          const choice = btn.dataset.choice;
+          selectAnswerForStudent(slotId, choice);
+        });
+      });
+    }
+
+    function renderMobileView() {
+      const slot = State.slots.find(s => s.slotId === State.mySlotId) || State.slots[0];
+      const questions = getCurrentQuestions();
+      const q = questions[State.currentQuestionIdx];
+
+      document.getElementById('mobStudentName').textContent = `${slot.student.name} (STT: ${slot.student.stt})`;
+      document.getElementById('mobQIndex').textContent = `CÂU HỎI ${State.currentQuestionIdx + 1} / ${questions.length}`;
+      document.getElementById('mobQTitle').textContent = q.title;
+
+      const imgWrap = document.getElementById('mobImgWrap');
+      const imgEl = document.getElementById('mobImg');
+      if (q.image) {
+        imgEl.src = q.image;
+        imgWrap.style.display = 'block';
+      } else {
+        imgWrap.style.display = 'none';
+      }
+
+      const chosen = slot.choice;
+      document.getElementById('mobChosenText').textContent = chosen ? `[ ${chosen} ]` : 'Chưa chọn';
+
+      ['A', 'B', 'C', 'D'].forEach(letter => {
+        const btn = document.getElementById(`mobBtn${letter}`);
+        btn.classList.toggle('active', chosen === letter);
+      });
+
+      const statusMsg = document.getElementById('mobStatusMsg');
+      if (State.isRevealed) {
+        if (chosen === q.correct) {
+          statusMsg.textContent = `🎉 CHÍNH XÁC! Bạn đã trả lời đúng [ ${q.correct} ] (+100đ)`;
+          statusMsg.style.color = '#4ade80';
+        } else {
+          statusMsg.textContent = `❌ RẤT TIẾC! Đáp án đúng là [ ${q.correct} ]`;
+          statusMsg.style.color = '#f87171';
+        }
+      } else {
+        statusMsg.textContent = chosen ? `✓ Bạn đã tích chọn phương án [ ${chosen} ]` : '👉 Chạm vào 1 trong 4 phương án dưới đây để tích chọn:';
+        statusMsg.style.color = '#fbbf24';
+      }
+    }
+
+    /* =========================================================================
+       7. GAME CONTROLS & AUTO SCORING
+       ========================================================================= */
+    function revealAnswer() {
+      if (State.isRevealed) return;
+      stopTimer();
+      State.isRevealed = true;
+
+      const questions = getCurrentQuestions();
+      const currentQ = questions[State.currentQuestionIdx];
+
+      State.slots.forEach(slot => {
+        const tracker = ScoreTracker[slot.student.stt];
+        if (tracker) tracker.timesCalled++;
+
+        if (slot.choice === currentQ.correct) {
+          slot.score += 100;
+          if (tracker) {
+            tracker.correctAnswers++;
+            tracker.totalScore += 100;
+          }
+        }
+      });
+
+      const anyCorrect = State.slots.some(slot => slot.choice === currentQ.correct);
+      if (anyCorrect) {
+        SoundEngine.playCorrect();
+        triggerConfetti();
+      } else {
+        SoundEngine.playWrong();
+      }
+      renderQuestion();
+      renderSlots();
+      updateScoreTable();
+    }
+
+    function resetQuestion() {
+      stopTimer();
+      State.isRevealed = false;
+      State.slots.forEach(s => s.choice = null);
+      State.timerSeconds = getQuestionDuration();
+      updateTimer();
+      renderQuestion();
+      renderSlots();
+    }
+
+    function nextQuestion() {
+      const questions = getCurrentQuestions();
+      if (State.currentQuestionIdx < questions.length - 1) {
+        State.currentQuestionIdx++;
+        resetQuestion();
+      }
+    }
+
+    function prevQuestion() {
+      if (State.currentQuestionIdx > 0) {
+        State.currentQuestionIdx--;
+        resetQuestion();
+      }
+    }
+
+        // Hiệu ứng pháo hoa Confetti 100% Offline
+    function triggerConfetti() {
+      const canvas = document.getElementById('confettiCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const particles = [];
+      const colors = ['#f43f5e', '#3b82f6', '#eab308', '#22c55e', '#a855f7', '#06b6d4', '#fb923c'];
+
+      for (let i = 0; i < 90; i++) {
+        particles.push({
+          x: canvas.width / 2 + (Math.random() - 0.5) * 200,
+          y: canvas.height * 0.45,
+          vx: (Math.random() - 0.5) * 16,
+          vy: (Math.random() - 0.8) * 16,
+          size: Math.random() * 7 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rotation: Math.random() * 360,
+          vRot: (Math.random() - 0.5) * 10,
+          gravity: 0.35,
+          opacity: 1
+        });
+      }
+
+      let animId;
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let alive = false;
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += p.gravity;
+          p.rotation += p.vRot;
+          p.opacity -= 0.012;
+          if (p.opacity > 0) {
+            alive = true;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate((p.rotation * Math.PI) / 180);
+            ctx.globalAlpha = Math.max(0, p.opacity);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+            ctx.restore();
+          }
+        });
+
+        if (alive) {
+          animId = requestAnimationFrame(animate);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          cancelAnimationFrame(animId);
+        }
+      }
+      animate();
+    }
+
+    /* =========================================================================
+       7. TIMER LOGIC (TÍCH TẮC & NƯỚC RÚT)
+       ========================================================================= */
+    function getQuestionDuration() {
+      const questions = getCurrentQuestions();
+      const q = questions[State.currentQuestionIdx];
+      if (q && q.duration && Number(q.duration) > 0) {
+        return Number(q.duration);
+      }
+      return State.defaultDuration || 30;
+    }
+
+    function startTimer(sec) {
+      if (State.isTimerRunning) {
+        pauseTimer();
+        return;
+      }
+
+      if (sec === undefined || sec === null) {
+        if (State.timerSeconds <= 0) {
+          State.timerSeconds = getQuestionDuration();
+        }
+      } else {
+        State.timerSeconds = sec;
+      }
+
+      stopTimerInterval();
+      State.isTimerRunning = true;
+      updateTimer();
+
+      // Tiếng mở đầu
+      SoundEngine.playTick(true);
+
+      State.timerInterval = setInterval(() => {
+        State.timerSeconds--;
+        updateTimer();
+
+        if (State.timerSeconds > 5) {
+          // 30s -> 6s: Tiếng tích tắc đều đặn
+          SoundEngine.playTick(State.timerSeconds % 2 === 0);
+        } else if (State.timerSeconds > 0) {
+          // 5s -> 1s: Tiếng bíp dồn dập nước rút
+          SoundEngine.playWarningTick(State.timerSeconds);
+        } else {
+          // 0s: Hết giờ
+          stopTimer();
+          SoundEngine.playTimesUp();
+        }
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      stopTimerInterval();
+      State.isTimerRunning = false;
+      updateTimer();
+    }
+
+    function stopTimerInterval() {
+      if (State.timerInterval) clearInterval(State.timerInterval);
+      State.timerInterval = null;
+    }
+
+    function stopTimer() {
+      stopTimerInterval();
+      State.isTimerRunning = false;
+    }
+
+    function updateTimer() {
+      const timerEl = document.getElementById('timerDisplay');
+      const startBtn = document.getElementById('btnStartTimer');
+      if (!timerEl) return;
+
+      if (State.isTimerRunning) {
+        timerEl.textContent = `${State.timerSeconds}s`;
+        if (startBtn) {
+          startBtn.textContent = '⏸ Tạm dừng';
+          startBtn.style.background = '#eab308';
+          startBtn.style.borderColor = '#facc15';
+          startBtn.style.color = '#1e1b4b';
+        }
+      } else {
+        timerEl.textContent = `${State.timerSeconds}s`;
+        if (startBtn) {
+          startBtn.textContent = `▶ Bắt đầu (${State.timerSeconds}s)`;
+          startBtn.style.background = 'var(--primary)';
+          startBtn.style.borderColor = 'var(--primary)';
+          startBtn.style.color = 'white';
+        }
+      }
+
+      if (State.timerSeconds <= 5 && State.timerSeconds > 0) {
+        timerEl.style.background = '#ef4444';
+        timerEl.style.borderColor = '#f87171';
+        timerEl.style.color = '#ffffff';
+        timerEl.style.animation = 'timerPulse 0.5s infinite alternate';
+      } else if (State.timerSeconds === 0) {
+        timerEl.style.background = '#7f1d1d';
+        timerEl.style.borderColor = '#ef4444';
+        timerEl.style.color = '#fca5a5';
+        timerEl.style.animation = 'none';
+        timerEl.textContent = '0s (HẾT GIỜ)';
+        if (startBtn) {
+          startBtn.textContent = '↺ Đặt lại giờ';
+          startBtn.style.background = '#334155';
+          startBtn.style.borderColor = '#475569';
+          startBtn.style.color = 'white';
+        }
+      } else {
+        timerEl.style.background = 'rgba(15, 23, 42, 0.8)';
+        timerEl.style.borderColor = 'var(--card-border)';
+        timerEl.style.color = '#38bdf8';
+        timerEl.style.animation = 'none';
+      }
+    }
+
+    /* =========================================================================
+       8. RANDOM PICKER (VÒNG QUAY MAY MẮN & ÂM THANH)
+       ========================================================================= */
+    function repickOneSlot(slotId) {
+      const available = ALL_STUDENTS.filter(s => !State.slots.some(sl => sl.student.stt === s.stt));
+      const picked = available[Math.floor(Math.random() * available.length)];
+      if (picked) {
+        State.slots[slotId - 1].student = picked;
+        State.slots[slotId - 1].choice = null;
+        State.calledStudentIds.add(picked.stt);
+        SoundEngine.playFanfare();
+        triggerConfetti();
+        renderSlots();
+      }
+    }
+
+    // Vòng quay may mắn chân thực: Cuộn tên liên tục, âm thanh chậm dần rồi dừng
+    function spinAll(onComplete) {
+      const btn = document.getElementById('btnSpinAll');
+      if (btn) btn.disabled = true;
+
+      let count = 0;
+      const totalSteps = 20;
+      let delay = 50;
+
+      function step() {
+        count++;
+        // Tên học sinh chớp nháy ngẫu nhiên
+        const temp = [...ALL_STUDENTS].sort(() => 0.5 - Math.random());
+        for (let i = 1; i <= 4; i++) {
+          const el = document.getElementById(`namePick${i}`);
+          const card = document.getElementById(`slotPick${i}`);
+          if (el) {
+            el.textContent = temp[i-1].name;
+            el.dataset.stt = temp[i-1].stt;
+          }
+          if (card) {
+            card.style.borderColor = '#fbbf24';
+            card.style.background = 'rgba(251, 191, 36, 0.18)';
+          }
+        }
+
+        // Phát tiếng lách cách vòng quay
+        SoundEngine.playWheelClick();
+
+        if (count < totalSteps) {
+          delay += Math.floor(count * 6.5);
+          setTimeout(step, delay);
+        } else {
+          // Chốt 4 học sinh may mắn
+          const finalShuffled = [...ALL_STUDENTS].sort(() => 0.5 - Math.random());
+          for (let i = 1; i <= 4; i++) {
+            const el = document.getElementById(`namePick${i}`);
+            const card = document.getElementById(`slotPick${i}`);
+            if (el) {
+              el.textContent = finalShuffled[i-1].name;
+              el.dataset.stt = finalShuffled[i-1].stt;
+            }
+            if (card) {
+              card.style.borderColor = '#38bdf8';
+              card.style.background = 'rgba(15,23,42,0.85)';
+            }
+          }
+          if (btn) btn.disabled = false;
+
+          // Hợp âm chiến thắng ngân vang và pháo hoa
+          SoundEngine.playFanfare();
+          triggerConfetti();
+
+          if (typeof onComplete === 'function') onComplete();
+        }
+      }
+
+      step();
+    }
+
+    function applyPicked() {
+      for (let i = 1; i <= 4; i++) {
+        const stt = parseInt(document.getElementById(`namePick${i}`).dataset.stt);
+        const st = ALL_STUDENTS.find(s => s.stt === stt);
+        if (st) {
+          State.slots[i-1].student = st;
+          State.slots[i-1].choice = null;
+          State.calledStudentIds.add(st.stt);
+        }
+      }
+      document.getElementById('pickerModal').style.display = 'none';
+      renderSlots();
+    }
+
+
+    /* =========================================================================
+       9. SCORECARD & RESET
+       ========================================================================= */
+    function updateScoreTable() {
+      const tbody = document.getElementById('scoreTableBody');
+      tbody.innerHTML = '';
+      let tested = 0;
+
+      ALL_STUDENTS.forEach(st => {
+        const r = ScoreTracker[st.stt] || { timesCalled: 0, correctAnswers: 0 };
+        if (r.timesCalled > 0) tested++;
+        const mark = r.timesCalled > 0 ? ((r.correctAnswers / r.timesCalled) * 10).toFixed(1) : '-';
+
+        const tr = document.createElement('tr');
+        tr.style.borderBottom = '1px solid rgba(255,255,255,0.06)';
+        tr.innerHTML = `
+          <td style="padding: 10px; color: #94a3b8; font-weight: 700;">${st.stt}</td>
+          <td style="padding: 10px; font-weight: 700; color: white;">${st.name}</td>
+          <td style="padding: 10px; color: #cbd5e1;">${st.gender}</td>
+          <td style="padding: 10px; text-align: center; color: #38bdf8;">${r.timesCalled}</td>
+          <td style="padding: 10px; text-align: center; color: #4ade80;">${r.correctAnswers}</td>
+          <td style="padding: 10px; text-align: right; font-weight: 800; color: #fbbf24;">${mark}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('totalTestedDisplay').textContent = tested;
+    }
+
+    function resetAllScores() {
+      if (confirm('Thầy có chắc chắn muốn xóa toàn bộ điểm thử nghiệm để bắt đầu dạy thật không?')) {
+        ALL_STUDENTS.forEach(s => {
+          ScoreTracker[s.stt] = {
+            stt: s.stt,
+            name: s.name,
+            gender: s.gender,
+            timesCalled: 0,
+            correctAnswers: 0,
+            totalScore: 0
+          };
+        });
+
+        State.slots.forEach(slot => {
+          slot.score = 0;
+          slot.choice = null;
+        });
+
+        updateScoreTable();
+        renderSlots();
+        renderQuestion();
+        alert('✓ Đã xóa sạch toàn bộ điểm thử nghiệm! Sổ điểm đã được làm mới 100%.');
+      }
+    }
+
+    function exportCSV() {
+      let csv = "\uFEFFSTT,Họ và tên,Giới tính,Lớp,Số lần gọi,Số câu đúng,Điểm hệ 10\n";
+      ALL_STUDENTS.forEach(s => {
+        const r = ScoreTracker[s.stt];
+        const mark = r.timesCalled > 0 ? ((r.correctAnswers / r.timesCalled) * 10).toFixed(1) : '';
+        csv += `${s.stt},"${s.name}",${s.gender},10A6,${r.timesCalled},${r.correctAnswers},${mark}\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Bang_Diem_Kiem_Tra_10A6.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    /* =========================================================================
+       10. PURE JS QR CODE GENERATOR
+       ========================================================================= */
+    function drawSimpleQR(canvas, text) {
+      const ctx = canvas.getContext('2d');
+      const size = canvas.width;
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, size, size);
+
+      ctx.fillStyle = '#0f172a';
+      const gridSize = 25;
+      const cellSize = size / gridSize;
+
+      function drawCorner(startX, startY) {
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(startX * cellSize, startY * cellSize, 7 * cellSize, 7 * cellSize);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect((startX + 1) * cellSize, (startY + 1) * cellSize, 5 * cellSize, 5 * cellSize);
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect((startX + 2) * cellSize, (startY + 2) * cellSize, 3 * cellSize, 3 * cellSize);
+      }
+
+      drawCorner(1, 1);
+      drawCorner(17, 1);
+      drawCorner(1, 17);
+
+      let hash = 0;
+      for (let i = 0; i < text.length; i++) {
+        hash = (hash << 5) - hash + text.charCodeAt(i);
+        hash |= 0;
+      }
+
+      for (let r = 0; r < gridSize; r++) {
+        for (let c = 0; c < gridSize; c++) {
+          if ((r < 8 && c < 8) || (r < 8 && c > 16) || (r > 16 && c < 8)) continue;
+          const val = Math.abs(Math.sin((r * 13 + c * 17 + hash)) * 10000);
+          if (val % 2 > 1) {
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(c * cellSize, r * cellSize, cellSize - 0.5, cellSize - 0.5);
+          }
+        }
+      }
+    }
+
+    /* =========================================================================
+       11. WIRING & INITIALIZATION
+       ========================================================================= */
+    document.getElementById('btnFullscreen').addEventListener('click', toggleFullscreen);
+    document.getElementById('btnRevealAnswer').addEventListener('click', revealAnswer);
+    document.getElementById('btnNextQ').addEventListener('click', nextQuestion);
+    document.getElementById('btnPrevQ').addEventListener('click', prevQuestion);
+    document.getElementById('btnResetQ').addEventListener('click', resetQuestion);
+    // Timer control event listeners
+    const btnStartTimer = document.getElementById('btnStartTimer');
+    if (btnStartTimer) {
+      btnStartTimer.addEventListener('click', () => {
+        startTimer();
+      });
+    }
+
+    const timerDisplay = document.getElementById('timerDisplay');
+    if (timerDisplay) {
+      timerDisplay.addEventListener('click', () => {
+        if (State.isTimerRunning) {
+          pauseTimer();
+        } else if (State.timerSeconds <= 0) {
+          State.timerSeconds = getQuestionDuration();
+          updateTimer();
+        } else {
+          startTimer();
+        }
+      });
+    }
+
+    const selectTimerDuration = document.getElementById('selectTimerDuration');
+    if (selectTimerDuration) {
+      selectTimerDuration.addEventListener('change', (e) => {
+        if (e.target.value === 'custom') {
+          const customVal = prompt('Nhập số giây đếm ngược mong muốn (5 - 300 giây):', State.timerSeconds);
+          if (customVal && !isNaN(customVal)) {
+            const num = Math.min(300, Math.max(5, parseInt(customVal)));
+            State.defaultDuration = num;
+            State.timerSeconds = num;
+            let opt = selectTimerDuration.querySelector(`option[value="${num}"]`);
+            if (!opt) {
+              opt = document.createElement('option');
+              opt.value = num;
+              opt.textContent = `${num}s (Tùy chỉnh)`;
+              selectTimerDuration.insertBefore(opt, selectTimerDuration.lastElementChild);
+            }
+            selectTimerDuration.value = num;
+            updateTimer();
+          } else {
+            selectTimerDuration.value = State.defaultDuration || 30;
+          }
+        } else {
+          const num = parseInt(e.target.value);
+          State.defaultDuration = num;
+          State.timerSeconds = num;
+          updateTimer();
+        }
+      });
+    }
+
+    const btnTimerMinus5 = document.getElementById('btnTimerMinus5');
+    if (btnTimerMinus5) {
+      btnTimerMinus5.addEventListener('click', () => {
+        State.timerSeconds = Math.max(5, State.timerSeconds - 5);
+        updateTimer();
+      });
+    }
+
+    const btnTimerPlus5 = document.getElementById('btnTimerPlus5');
+    if (btnTimerPlus5) {
+      btnTimerPlus5.addEventListener('click', () => {
+        State.timerSeconds = Math.min(300, State.timerSeconds + 5);
+        updateTimer();
+      });
+    }
+
+    // Active Student Pill Selector
+    document.querySelectorAll('.student-pill-btn').forEach(pill => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('.student-pill-btn').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        State.activeTarget = pill.dataset.target;
+      });
+    });
+
+    // Question Set Selector
+    const setSel = document.getElementById('setSelector');
+    QUESTION_SETS.forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s.id;
+      opt.textContent = `${s.title} (${s.questions.length} câu)`;
+      setSel.appendChild(opt);
+    });
+    setSel.addEventListener('change', (e) => {
+      currentSetId = e.target.value;
+      State.currentQuestionIdx = 0;
+      resetQuestion();
+    });
+
+    // Modals
+    document.getElementById('btnOpenPicker').addEventListener('click', () => {
+      spinAll();
+      document.getElementById('pickerModal').style.display = 'flex';
+    });
+    document.getElementById('btnQuickRoll').addEventListener('click', () => {
+      spinAll();
+      document.getElementById('pickerModal').style.display = 'flex';
+    });
+    document.getElementById('btnClosePicker').addEventListener('click', () => {
+      document.getElementById('pickerModal').style.display = 'none';
+    });
+    document.getElementById('btnSpinAll').addEventListener('click', spinAll);
+    document.getElementById('btnApplyPicker').addEventListener('click', applyPicked);
+
+    document.getElementById('btnLeaderboard').addEventListener('click', () => {
+      updateScoreTable();
+      document.getElementById('leaderboardModal').style.display = 'flex';
+    });
+    document.getElementById('btnCloseScoreModal').addEventListener('click', () => {
+      document.getElementById('leaderboardModal').style.display = 'none';
+    });
+    document.getElementById('btnCloseScoreModal2').addEventListener('click', () => {
+      document.getElementById('leaderboardModal').style.display = 'none';
+    });
+    document.getElementById('btnResetScores').addEventListener('click', resetAllScores);
+    document.getElementById('btnExportCSV').addEventListener('click', exportCSV);
+
+    document.getElementById('btnSound').addEventListener('click', () => {
+      const on = SoundEngine.toggle();
+      document.getElementById('btnSound').textContent = on ? '🔊 Âm thanh: BẬT' : '🔇 Âm thanh: TẮT';
+    });
+
+    // QR Modal
+    document.getElementById('btnOpenQR').addEventListener('click', () => {
+      const canvas = document.getElementById('qrCanvas');
+      drawSimpleQR(canvas, window.location.href.split('?')[0] + '?role=student');
+      document.getElementById('qrModal').style.display = 'flex';
+    });
+    document.getElementById('btnCloseQR').addEventListener('click', () => {
+      document.getElementById('qrModal').style.display = 'none';
+    });
+    document.getElementById('btnCloseQR2').addEventListener('click', () => {
+      document.getElementById('qrModal').style.display = 'none';
+    });
+    document.getElementById('btnOpenStudentTab').addEventListener('click', () => {
+      window.open(window.location.href.split('?')[0] + '?role=student', '_blank');
+    });
+
+    // Sets Modal
+    document.getElementById('btnManageSets').addEventListener('click', () => {
+      document.getElementById('setsModal').style.display = 'flex';
+    });
+    document.getElementById('btnCloseSets').addEventListener('click', () => {
+      document.getElementById('setsModal').style.display = 'none';
+    });
+    document.getElementById('btnCloseSets2').addEventListener('click', () => {
+      document.getElementById('setsModal').style.display = 'none';
+    });
+
+    // View Toggle
+    document.getElementById('btnToggleView').addEventListener('click', () => {
+      State.viewMode = State.viewMode === 'host' ? 'student' : 'host';
+      document.getElementById('hostView').style.display = State.viewMode === 'host' ? 'flex' : 'none';
+      document.getElementById('studentView').style.display = State.viewMode === 'student' ? 'flex' : 'none';
+      document.getElementById('btnToggleView').textContent = State.viewMode === 'host' ? '📱 Mở Giao diện ĐT' : '💻 Mở Màn hình GV';
+      if (State.viewMode === 'student') renderMobileView();
+      else { renderQuestion(); renderSlots(); }
+    });
+
+    document.getElementById('btnBackHost').addEventListener('click', () => {
+      State.viewMode = 'host';
+      document.getElementById('hostView').style.display = 'flex';
+      document.getElementById('studentView').style.display = 'none';
+      document.getElementById('btnToggleView').textContent = '📱 Mở Giao diện ĐT';
+      renderQuestion();
+      renderSlots();
+    });
+
+    document.getElementById('mobSlotSelect').addEventListener('change', (e) => {
+      State.mySlotId = parseInt(e.target.value);
+      renderMobileView();
+    });
+
+    ['A', 'B', 'C', 'D'].forEach(ch => {
+      document.getElementById(`mobBtn${ch}`).addEventListener('click', () => {
+        selectAnswerForStudent(State.mySlotId, ch);
+      });
+    });
+
+    // Keyboard Shortcuts (F / P / F11 for Fullscreen; 1, 2, 3, 4 -> A, B, C, D)
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+      if (e.key === 'f' || e.key === 'F' || e.key === 'p' || e.key === 'P') {
+        toggleFullscreen();
+      }
+      else if (e.code === 'Space') { e.preventDefault(); revealAnswer(); }
+      else if (e.code === 'ArrowRight') { e.preventDefault(); nextQuestion(); }
+      else if (e.code === 'ArrowLeft') { e.preventDefault(); prevQuestion(); }
+      else if (['1', '2', '3', '4'].includes(e.key)) {
+        const map = { '1': 'A', '2': 'B', '3': 'C', '4': 'D' };
+        handleCardOptionClick(map[e.key]);
+      }
+    });
+
+    
+    // Edit Question Modal Logic
+    const editQModal = document.getElementById('editQModal');
+    const btnEditCurrentQ = document.getElementById('btnEditCurrentQ');
+    const btnCloseEditQ = document.getElementById('btnCloseEditQ');
+    const btnCancelEditQ = document.getElementById('btnCancelEditQ');
+    const btnSaveEditQ = document.getElementById('btnSaveEditQ');
+
+    function openEditModal() {
+      const questions = getCurrentQuestions();
+      const q = questions[State.currentQuestionIdx];
+      if (!q) return;
+
+      document.getElementById('editQTitle').value = q.title || '';
+      document.getElementById('editOptA').value = (q.options && q.options.A) || '';
+      document.getElementById('editOptB').value = (q.options && q.options.B) || '';
+      document.getElementById('editOptC').value = (q.options && q.options.C) || '';
+      document.getElementById('editOptD').value = (q.options && q.options.D) || '';
+      document.getElementById('editQCorrect').value = q.correct || 'A';
+      document.getElementById('editQDuration').value = q.duration || State.defaultDuration || 30;
+      document.getElementById('editQExp').value = q.explanation || '';
+
+      if (editQModal) editQModal.style.display = 'flex';
+    }
+
+    function closeEditModal() {
+      if (editQModal) editQModal.style.display = 'none';
+    }
+
+    if (btnEditCurrentQ) {
+      btnEditCurrentQ.addEventListener('click', openEditModal);
+    }
+    if (btnCloseEditQ) {
+      btnCloseEditQ.addEventListener('click', closeEditModal);
+    }
+    if (btnCancelEditQ) {
+      btnCancelEditQ.addEventListener('click', closeEditModal);
+    }
+    if (editQModal) {
+      editQModal.addEventListener('click', (e) => {
+        if (e.target === editQModal) closeEditModal();
+      });
+    }
+
+    if (btnSaveEditQ) {
+      btnSaveEditQ.addEventListener('click', () => {
+        const questions = getCurrentQuestions();
+        const q = questions[State.currentQuestionIdx];
+        if (!q) return;
+
+        const newTitle = document.getElementById('editQTitle').value.trim();
+        if (newTitle) q.title = newTitle;
+        if (!q.options) q.options = {};
+        q.options.A = document.getElementById('editOptA').value.trim();
+        q.options.B = document.getElementById('editOptB').value.trim();
+        q.options.C = document.getElementById('editOptC').value.trim();
+        q.options.D = document.getElementById('editOptD').value.trim();
+        q.correct = document.getElementById('editQCorrect').value;
+        const durVal = parseInt(document.getElementById('editQDuration').value);
+        if (durVal && durVal >= 5) {
+          q.duration = durVal;
+          State.timerSeconds = durVal;
+        }
+        q.explanation = document.getElementById('editQExp').value.trim();
+
+        // Save to localStorage if possible
+        try {
+          localStorage.setItem('PHYSICS_QUESTION_SETS', JSON.stringify(QUESTION_SETS));
+        } catch(e) {}
+
+        renderQuestion();
+        renderSlots();
+        closeEditModal();
+        SoundEngine.playPop();
+        alert('✓ Đã cập nhật thành công nội dung câu hỏi và các phương án!');
+      });
+    }
+// INITIAL START
+    renderQuestion();
+    renderSlots();
+  </script>
+  
+</body>
+</html>
